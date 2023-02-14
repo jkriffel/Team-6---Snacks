@@ -1,0 +1,14 @@
+#redTeam{
+    border-style: solid;
+    float: left;
+    width: 34%;
+}
+#greenTeam{
+    border-style: solid;
+    float: left;
+    width: 34%;
+}
+.center{
+    text-align: center;
+    border-style: solid;
+}
