@@ -1,5 +1,6 @@
 import pygame, sys
 from textbox import TextBox
+from button import Button
 
 pygame.init()
 
@@ -21,6 +22,17 @@ def create_table(count, x, y, w, h):
 		boxes.append(box)
 	return boxes
 
+def create_buttons(x, y, w, h):
+	return [
+		Button(x, y, w/12, h, "F1\nEdit\nGame", action = lambda:print("F1 Edit Game")),
+		Button(x+w/12, y, w/12, h, "F2\nGame\nParameters", action = lambda:print("F2 Game Parameters")),
+		Button(x+2*w/12, y, w/12, h, "F3\nStart\nGame", action = lambda:print("F3 Start Game")),
+		Button(x+4*w/12, y, w/12, h, "F5\nPreEntered\nGame", action = lambda:print("F5 PreEntered Game")),
+		Button(x+6*w/12, y, w/12, h, "F7\n", action = lambda:print("F7")),
+		Button(x+7*w/12, y, w/12, h, "F8\nView\nGame", action = lambda:print("F8 View Game")),
+		Button(x+9*w/12, y, w/12, h, "F10\nFlick\nSync", action = lambda:print("F10 Flick Sync")),
+		Button(x+11*w/12, y, w/12, h, "F12\nClear\nGame", action = lambda:print("F12 Clear Game")),
+	]
 
 #here is where the splash screen is executed
 def splash_screen():
@@ -64,12 +76,15 @@ def player_screen():
 	#create team top texts
 	team1_text = get_font(25).render("TEAM 1", True, "GREEN")
 	team2_text = get_font(25).render("TEAM 2", True, "RED")
-	team1_text_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 225))
-	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 400 - CELL_WIDTH, SCREEN_CENTER_Y - 225))
+	team1_text_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 250))
+	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 400 - CELL_WIDTH, SCREEN_CENTER_Y - 250))
 
 	#call table function to create player entries
-	team1_table = create_table(10, SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 200, CELL_WIDTH, CELL_HEIGHT)
-	team2_table = create_table(10, SCREEN_CENTER_X + 400 - CELL_WIDTH, SCREEN_CENTER_Y - 200, CELL_WIDTH, CELL_HEIGHT)
+	team1_table = create_table(10, SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 225, CELL_WIDTH, CELL_HEIGHT)
+	team2_table = create_table(10, SCREEN_CENTER_X + 400 - CELL_WIDTH, SCREEN_CENTER_Y - 225, CELL_WIDTH, CELL_HEIGHT)
+
+	#create buttons
+	buttons = create_buttons(0, 640, 1280, 80)
 	
 	#game loop
 	while True:
@@ -85,6 +100,10 @@ def player_screen():
 			team1_table[box].draw(SCREEN)
 			team2_table[box].draw(SCREEN)
 		
+		#draw buttons
+		for button in buttons:
+			button.draw(SCREEN)
+		
 		pygame.display.flip()
 		
 		mouse_pos = pygame.mouse.get_pos()
@@ -96,6 +115,10 @@ def player_screen():
 				box.handle_event(event)
 			for box in team2_table:
 				box.handle_event(event)
+			
+			#handle button presses
+			for button in buttons:
+				button.handle_event(event)
 
 			if event.type == pygame.QUIT:
 				pygame.quit()
