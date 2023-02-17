@@ -24,14 +24,14 @@ def create_table(count, x, y, w, h):
 
 def create_buttons(x, y, w, h):
 	return [
-		Button(x, y, w/12, h, "F1\nEdit\nGame", border_color=pygame.Color('White'), action = lambda:print("F1 Edit Game")),
-		Button(x+w/12, y, w/12, h, "F2\nGame\nParameters", border_color=pygame.Color('White'), action = lambda:print("F2 Game Parameters")),
-		Button(x+2*w/12, y, w/12, h, "F3\nStart\nGame", border_color=pygame.Color('White'), action = lambda:print("F3 Start Game")),
-		Button(x+4*w/12, y, w/12, h, "F5\nPreEntered\nGame", border_color=pygame.Color('White'), action = lambda:print("F5 PreEntered Game")),
-		Button(x+6*w/12, y, w/12, h, "F7?", border_color=pygame.Color('White'), action = lambda:print("F7")),
-		Button(x+7*w/12, y, w/12, h, "F8\nView\nGame", border_color=pygame.Color('White'), action = lambda:print("F8 View Game")),
-		Button(x+9*w/12, y, w/12, h, "F10\nFlick\nSync", border_color=pygame.Color('White'), action = lambda:print("F10 Flick Sync")),
-		Button(x+11*w/12, y, w/12, h, "F12\nClear\nGame", border_color=pygame.Color('White'), action = lambda:print("F12 Clear Game")),
+		Button(x, y, w/12, h, "F1\nEdit\nGame", action = lambda:print("F1 Edit Game")),
+		Button(x+w/12, y, w/12, h, "F2\nGame\nParameters", action = lambda:print("F2 Game Parameters")),
+		Button(x+2*w/12, y, w/12, h, "F3\nStart\nGame", action = lambda:print("F3 Start Game")),
+		Button(x+4*w/12, y, w/12, h, "F5\nPreEntered\nGame", action = lambda:print("F5 PreEntered Game")),
+		Button(x+6*w/12, y, w/12, h, "F7\n", action = lambda:print("F7")),
+		Button(x+7*w/12, y, w/12, h, "F8\nView\nGame", action = lambda:print("F8 View Game")),
+		Button(x+9*w/12, y, w/12, h, "F10\nFlick\nSync", action = lambda:print("F10 Flick Sync")),
+		Button(x+11*w/12, y, w/12, h, "F12\nClear\nGame", action = lambda:print("F12 Clear Game")),
 	]
 
 #here is where the splash screen is executed
