@@ -1,6 +1,6 @@
 **Software Engineering Project Spring 2023 - Team 6**
-* Last Edited: 2/17/23
 * Project Contributors: Zachary Anderson, Joshua Hollis, James Riffel, Maci Danner, Michael Logal, and Drew Grove
+* Last Edited: 2/17/23
 
 **Project Description**:
 * A laser tag game interface including splash, player entry, and game action screens.
