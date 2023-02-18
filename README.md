@@ -9,7 +9,7 @@
 * proton.py - Essentially the main class. This class initially displays the splash screen and allows the user to move between it and the player screen.
 * textbox.py - The textbox/"player" class. This class is used for the collection and organization of player data (id, firstname, lastname, and codename) 
                that is entered on the player entry screen.
-* connect.py - 
+* connect.py - Establishes and tests the connection with the Heroku database.
 * player.py -
 * main.py - This class imports the Flask web framework.
 * button.py - The button class. This class allows for the creation of buttons that when pressed, perform an action assigned to them in proton.py.
