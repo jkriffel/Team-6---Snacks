@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import flask
 import os
 from flask import send_from_directory
@@ -52,3 +53,22 @@ if __name__ == "__main__":
 #     myconnect.close()
     
 #     return 1
+=======
+from flask import Flask, redirect, url_for, render_template
+
+#Making our application
+app = Flask(__name__)
+# When link is loaded go straight to splashPage
+@app.route("/")
+@app.route("/splashScreen")
+def splashScreen():
+    return render_template('proton.html','proton.py')
+
+# Player entry route
+@app.route("/playerEntry")
+def playerScreen():
+    return "Player Screen"
+
+if __name__ == "__main__":
+    app.run()
+>>>>>>> Stashed changes
