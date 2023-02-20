@@ -1,15 +1,14 @@
 import pygame, sys
 
-pygame.init()
-SCREEN = pygame.display.set_mode((1280, 720))
 SCREEN_CENTER_X = 1280/2
 SCREEN_CENTER_Y = 720/2
 CELL_WIDTH = 250
 CELL_HEIGHT = 35
 
 def splash_screen():
-	running = True
+	RUNNING = True
 	pygame.init()
+	SCREEN = pygame.display.set_mode((1280, 720))
 	pygame.display.set_caption("Splash Screen")
 	splashImg = pygame.image.load("./assets/logo.jpg")
 	splashImg = pygame.transform.scale(splashImg, (1280, 720))
@@ -23,12 +22,12 @@ def splash_screen():
 	timer_event = pygame.USEREVENT + 1
 	pygame.time.set_timer(timer_event, 3000)
 	#create the game loop
-	while running:
+	while RUNNING:
 		SCREEN.fill("black")
 		SCREEN.blit(splashImg, image_rect)
 		SCREEN.blit(SS_TEXT, SS_TEXT_RECT)
 		pygame.display.flip()
-
+	
 		mouse_pos = pygame.mouse.get_pos()
 
 		for event in pygame.event.get():
@@ -37,7 +36,7 @@ def splash_screen():
 				sys.exit()
 
 			if event.type == timer_event:
-				running = False
+				RUNNING = False
 
 		pygame.display.update()
 	pygame.quit()

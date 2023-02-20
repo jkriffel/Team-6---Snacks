@@ -1,7 +1,7 @@
 import pygame, sys
 from textbox import TextBox
 from button import Button
-import pyjs
+from player_table import Player_Table
 from database import *
 
 pygame.init()
@@ -9,8 +9,8 @@ pygame.init()
 SCREEN = pygame.display.set_mode((1280, 720))
 SCREEN_CENTER_X = 1280/2
 SCREEN_CENTER_Y = 720/2
-CELL_WIDTH = 250
-CELL_HEIGHT = 35
+TABLE_WIDTH = 300
+TABLE_HEIGHT = 500
 pygame.display.set_caption("Splash Screen")
 
 def get_font(size): # Returns Press-Start-2P in the desired size
@@ -79,14 +79,12 @@ def player_screen():
 	team1_text = get_font(25).render("TEAM 1", True, "GREEN")
 	team2_text = get_font(25).render("TEAM 2", True, "RED")
 	team1_text_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 310))
-	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 400 - CELL_WIDTH, SCREEN_CENTER_Y - 310))
+	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 500 - TABLE_WIDTH, SCREEN_CENTER_Y - 310))
 
 	#call table function to create player entries
-	
-	team1_table_ID = create_table(15, SCREEN_CENTER_X - 550, SCREEN_CENTER_Y - 285, CELL_WIDTH-125, CELL_HEIGHT, 5)
-	team2_table_ID = create_table(15, SCREEN_CENTER_X + 250 - CELL_WIDTH, SCREEN_CENTER_Y - 285, CELL_WIDTH-125, CELL_HEIGHT, 5)
-	team1_table_name = create_table(15, SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 285, CELL_WIDTH, CELL_HEIGHT, 10)
-	team2_table_name = create_table(15, SCREEN_CENTER_X + 400 - CELL_WIDTH, SCREEN_CENTER_Y - 285, CELL_WIDTH, CELL_HEIGHT, 10)
+
+	red_team_table = Player_Table(SCREEN, SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 5)
+	green_team_table = Player_Table(SCREEN, SCREEN_CENTER_X + 100, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 5)
 
 	#create buttons
 	buttons = create_buttons(0, 640, 1280, 80)
@@ -100,13 +98,9 @@ def player_screen():
 		SCREEN.blit(team1_text, team1_text_rect)
 		SCREEN.blit(team2_text, team2_text_rect)
 		
-		#draw player tables 
-		for box in range(len(team1_table_name)):
-			team1_table_name[box].draw(SCREEN)
-			team2_table_name[box].draw(SCREEN)
-			team1_table_ID[box].draw(SCREEN)
-			team2_table_ID[box].draw(SCREEN)
-		
+		red_team_table.draw(SCREEN)
+		green_team_table.draw(SCREEN)
+
 		#draw buttons
 		for button in buttons:
 			button.draw(SCREEN)
@@ -117,25 +111,8 @@ def player_screen():
 
 		for event in pygame.event.get():
 
-			#handle player table inputs
-			for x in range(len(team1_table_ID)):
-				if team1_table_ID[x].text != '' and not team1_table_ID[x].active:
-					team1_table_name[x].text = get_user_codename(team1_table_ID[x].text)
-				team1_table_name[x].handle_event(event)
-				team2_table_name[x].handle_event(event)
-				team1_table_ID[x].handle_event(event)
-				team2_table_ID[x].handle_event(event)
-				
-			#for box in team1_table_name:
-			#	box.handle_event(event)
-			#for box in team2_table_name:
-			#	box.handle_event(event)
-			#for box in team1_table_ID:
-			#	if box.text != '' and not box.active:
-			#		pass
-			#	box.handle_event(event)
-			#for box in team2_table_ID:
-			#	box.handle_event(event)
+			red_team_table.handle_event(event)
+			green_team_table.handle_event(event)
 
 			#handle button presses
 			for button in buttons:

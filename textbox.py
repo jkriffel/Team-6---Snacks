@@ -1,4 +1,5 @@
 import pygame
+from database import *
 
 pygame.init()
 COLOR_DISABLED = pygame.Color('White')
@@ -34,6 +35,7 @@ class TextBox:
 			#exit text box
 			if event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:
 				self.active = not self.active
+				
 
 			elif event.key == pygame.K_BACKSPACE:
 				self.text = self.text[:-1]
