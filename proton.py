@@ -9,7 +9,7 @@ pygame.init()
 SCREEN = pygame.display.set_mode((1280, 720))
 SCREEN_CENTER_X = 1280/2
 SCREEN_CENTER_Y = 720/2
-TABLE_WIDTH = 300
+TABLE_WIDTH = 350
 TABLE_HEIGHT = 500
 pygame.display.set_caption("Splash Screen")
 
@@ -79,12 +79,12 @@ def player_screen():
 	team1_text = get_font(25).render("TEAM 1", True, "GREEN")
 	team2_text = get_font(25).render("TEAM 2", True, "RED")
 	team1_text_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 310))
-	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 500 - TABLE_WIDTH, SCREEN_CENTER_Y - 310))
+	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 550 - TABLE_WIDTH, SCREEN_CENTER_Y - 310))
 
 	#call table function to create player entries
 
-	red_team_table = Player_Table(SCREEN, SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 5)
-	green_team_table = Player_Table(SCREEN, SCREEN_CENTER_X + 100, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 5)
+	red_team_table = Player_Table(SCREEN, SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 10)
+	green_team_table = Player_Table(SCREEN, SCREEN_CENTER_X + 100, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 10)
 
 	#create buttons
 	buttons = create_buttons(0, 640, 1280, 80)
