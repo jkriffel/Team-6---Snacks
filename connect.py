@@ -1,74 +1,39 @@
-<<<<<<< Updated upstream
 import flask
 import os
 from flask import send_from_directory
+import psycopg2
+
+DB_HOST = "ec2-52-201-124-168.compute-1.amazonaws.com"
+DB_NAME = "daf852u68chkv6"
+DB_USER = "ymvkfvfaiyyqrb"
+DB_PASS = "0bb71cbd549be10c112e262649118e7fa139c06835b6417c3f20521868c00165"
+
 
 app = flask.Flask(__name__)
+try:
+    conn = psycopg2.connect(host = DB_HOST, database = DB_NAME, user = DB_USER, password = DB_PASS)
+except Exception:
+    print("connection failed")
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/favicon.png')
-
-@app.route('/')
-@app.route('/home')
-def home():
-    return "Hello World"
-
-if __name__ == "__main__":
-    app.secret_key = 'ItIsASecret'
-    app.debug = True
-    app.run()
-
-# import psycpog2
-
-# class Adaptor():
-#   def __init__(self):
-#     pass
-  
-#   def create(self, first, last, code, playerID):
-#     self.first = first
-#     self.last = last
-#     self.code = code
-#     self.playerID = playerID
+def check_user_by_id(id):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM player WHERE id = %s;", (id,))
+    if cur.fetchone():
+        cur.close()
+        return True
+    else:
+        cur.close()
+        return False
     
-#     try:
-#       myconnect = psycopg2.connect(dbname="", user="", password="", host="")
-#       mycursor = myconnect.cursor()
-      
-#     except:
-#        print("Can't connect")
-        
-#     entry = "INSERT INTO player (first, last, code, playerID) VALUES (%s, %s, %s, %s)"
-#     playerValues = (self.first, self.last, self.code, self.playerID)
-    
-#     try:
-#       mycursor.execute(entry, playerValues)
-#       myconnect.commit()
-    
-#     except:
-#       print("Error in adding player")
-    
-    
-#     myconnect.close()
-    
-#     return 1
-=======
-from flask import Flask, redirect, url_for, render_template
+def get_user_codename(id):
+    cur = conn.cursor()
 
-#Making our application
-app = Flask(__name__)
-# When link is loaded go straight to splashPage
-@app.route("/")
-@app.route("/splashScreen")
-def splashScreen():
-    return render_template('proton.html','proton.py')
-
-# Player entry route
-@app.route("/playerEntry")
-def playerScreen():
-    return "Player Screen"
-
-if __name__ == "__main__":
-    app.run()
->>>>>>> Stashed changes
+    if check_user_by_id(id):
+        cur.execute("SELECT * FROM player WHERE id = %s;", (id,))
+        user = cur.fetchone()
+        cur.close()
+        return user[3]
+    else:
+        cur.close
+        return "no user found"
+        print("user does not exist")

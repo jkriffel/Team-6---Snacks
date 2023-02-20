@@ -1,6 +1,8 @@
 import pygame, sys
 from textbox import TextBox
 from button import Button
+import pyjs
+from connect import *
 
 pygame.init()
 
@@ -116,14 +118,24 @@ def player_screen():
 		for event in pygame.event.get():
 
 			#handle player table inputs
-			for box in team1_table_name:
-				box.handle_event(event)
-			for box in team2_table_name:
-				box.handle_event(event)
-			for box in team1_table_ID:
-				box.handle_event(event)
-			for box in team2_table_ID:
-				box.handle_event(event)
+			for x in range(len(team1_table_ID)):
+				if team1_table_ID[x].text != '' and not team1_table_ID[x].active:
+					team1_table_name[x].text = get_user_codename(team1_table_ID[x].text)
+				team1_table_name[x].handle_event(event)
+				team2_table_name[x].handle_event(event)
+				team1_table_ID[x].handle_event(event)
+				team2_table_ID[x].handle_event(event)
+				
+			#for box in team1_table_name:
+			#	box.handle_event(event)
+			#for box in team2_table_name:
+			#	box.handle_event(event)
+			#for box in team1_table_ID:
+			#	if box.text != '' and not box.active:
+			#		pass
+			#	box.handle_event(event)
+			#for box in team2_table_ID:
+			#	box.handle_event(event)
 
 			#handle button presses
 			for button in buttons:
