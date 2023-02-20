@@ -31,14 +31,14 @@ class Player_Table:
 			self.active.append([False, False]) 
 		self.screen = screen
 		self.text_limit = text_limit
-
+	#Iterates through all rectangle entities in table and draws
 	def draw(self, screen):
 		for i in range(len(self.rect)):
 			for j in range(len(self.rect[i])):
 				self.text_draw = FONT.render(self.text[i][j], True, self.color[i][j])
 				screen.blit(self.text_draw, (self.rect[i][j].x+5, self.rect[i][j].y+5))
 				pygame.draw.rect(screen, self.color[i][j], self.rect[i][j], 3)
-
+	#Handles input events
 	def handle_event(self, event):
 		for i in range(len(self.rect)):
 			for j in range(len(self.rect[i])):
@@ -52,7 +52,7 @@ class Player_Table:
 				# when a text[i][j] box is active[i][j], process key inputs
 				if event.type == pygame.KEYDOWN and self.active[i][j]:
 
-					#exit text[i][j] box
+					#If enter key pressed access the database and exit textbox
 					if event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:
 						if self.text[i][0] != '' and self.active[i][0]:
 							self.text[i][1] = get_user_codename(self.text[i][0]) 
@@ -60,7 +60,8 @@ class Player_Table:
 							create_user(self.text[i][0], self.text[i][1])
 							
 						self.active[i][j] = not self.active[i][j]
-
+					
+					#Handle text input
 					elif event.key == pygame.K_BACKSPACE:
 						self.text[i][j] = self.text[i][j][:-1]
 					elif len(self.text[i][j]) < self.text_limit:
