@@ -1,1 +1,2 @@
-web gunicorn connect:app --log-file -
+web: python proton.py
+python: python proton.py
