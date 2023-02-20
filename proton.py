@@ -2,7 +2,7 @@ import pygame, sys
 from textbox import TextBox
 from button import Button
 import pyjs
-from connect import *
+from database import *
 
 pygame.init()
 
