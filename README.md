@@ -22,4 +22,4 @@
 
 **Disclaimer**:
  * The presence of both html and Python files that do very similar tasks is due to the back and forth design decisions made throughout our development.
-   Using Python is the preferred development path, however, the javascript/html is the current backup plan.
+   Using Python is the preferred development path, however, the javascript/html implementation is our current backup.
