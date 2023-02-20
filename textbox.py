@@ -1,19 +1,21 @@
 import pygame
+from database import *
 
 pygame.init()
 COLOR_DISABLED = pygame.Color('White')
 COLOR_ENABLED = pygame.Color('Darkgrey')
-FONT = pygame.font.Font("./assets/font.ttf", 25)
+FONT = pygame.font.Font("./assets/font.ttf", 20)
 
 class TextBox:
 
-	def __init__(self, screen, x, y, w, h):
+	def __init__(self, screen, x, y, w, h, text_limit):
 		self.rect = pygame.Rect(x, y, w, h)
 		self.color = COLOR_DISABLED
 		self.text = ''
 		self.text_draw = FONT.render('', True, self.color)
 		self.active = False
 		self.screen = screen
+		self.text_limit = text_limit
 
 	def draw(self, screen):
 		screen.blit(self.text_draw, (self.rect.x+5, self.rect.y+5))
@@ -33,10 +35,11 @@ class TextBox:
 			#exit text box
 			if event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:
 				self.active = not self.active
+				
 
 			elif event.key == pygame.K_BACKSPACE:
 				self.text = self.text[:-1]
-			elif len(self.text) < 9:
+			elif len(self.text) < self.text_limit:
 				self.text += event.unicode
 			# re draw the text.
 			self.text_draw = FONT.render(self.text, True, self.color)
