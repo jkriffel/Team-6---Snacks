@@ -16,14 +16,6 @@ pygame.display.set_caption("Splash Screen")
 def get_font(size): # Returns Press-Start-2P in the desired size
 	return pygame.font.Font("./assets/font.ttf", size)
 
-#function to create the player tables w & h are cell specific
-def create_table(count, x, y, w, h, text_limit):
-	boxes = []
-	for i in range(count):
-		box = TextBox(SCREEN, x, y + ((h-3)*i), w, h, text_limit)
-		boxes.append(box)
-	return boxes
-
 def create_buttons(x, y, w, h):
 	return [
 		Button(x, y, w/12, h, "F1\nEdit\nGame", action = lambda:print("F1 Edit Game")),
@@ -83,8 +75,8 @@ def player_screen():
 
 	#call table function to create player entries
 
-	red_team_table = Player_Table(SCREEN, SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 10)
-	green_team_table = Player_Table(SCREEN, SCREEN_CENTER_X + 100, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT, 10)
+	red_team_table = Player_Table(SCREEN, SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT)
+	green_team_table = Player_Table(SCREEN, SCREEN_CENTER_X + 100, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT)
 
 	#create buttons
 	buttons = create_buttons(0, 640, 1280, 80)
