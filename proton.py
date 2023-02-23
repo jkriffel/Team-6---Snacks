@@ -11,21 +11,39 @@ SCREEN_CENTER_X = 1280/2
 SCREEN_CENTER_Y = 720/2
 TABLE_WIDTH = 350
 TABLE_HEIGHT = 500
-pygame.display.set_caption("Splash Screen")
+
+def button_functions(button_id):
+	if button_id == 1:
+		print("entering edit mode")
+	elif button_id == 2:
+		pass
+	elif button_id == 3:
+		pass
+	elif button_id == 5:
+		print("starting game lol")
+		action_screen()
+	elif button_id == 7:
+		pass
+	elif button_id == 8:
+		pass
+	elif button_id == 10:
+		pass
+	elif button_id == 12:
+		pass
 
 def get_font(size): # Returns Press-Start-2P in the desired size
 	return pygame.font.Font("./assets/font.ttf", size)
 
 def create_buttons(x, y, w, h):
 	return [
-		Button(x, y, w/12, h, "F1\nEdit\nGame", action = lambda:print("F1 Edit Game")),
-		Button(x+w/12, y, w/12, h, "F2\nGame\nParameters", action = lambda:print("F2 Game Parameters")),
-		Button(x+2*w/12, y, w/12, h, "F3\nStart\nGame", action = lambda:print("F3 Start Game")),
-		Button(x+4*w/12, y, w/12, h, "F5\nPreEntered\nGame", action = lambda:print("F5 PreEntered Game")),
-		Button(x+6*w/12, y, w/12, h, "F7\n", action = lambda:print("F7")),
-		Button(x+7*w/12, y, w/12, h, "F8\nView\nGame", action = lambda:print("F8 View Game")),
-		Button(x+9*w/12, y, w/12, h, "F10\nFlick\nSync", action = lambda:print("F10 Flick Sync")),
-		Button(x+11*w/12, y, w/12, h, "F12\nClear\nGame", action = lambda:print("F12 Clear Game")),
+		Button(x,      	  y, w/12, h, "F1\nEdit\nGame",       1),
+		Button(x+w/12, 	  y, w/12, h, "F2\nGame\nParameters", 2),
+		Button(x+2*w/12,  y, w/12, h, "F3", 									3),
+		Button(x+4*w/12,  y, w/12, h, "F5\nStart\nGame", 			5),
+		Button(x+6*w/12,  y, w/12, h, "F7\n", 								7),
+		Button(x+7*w/12,  y, w/12, h, "F8\nView\nGame", 			8),
+		Button(x+9*w/12,  y, w/12, h, "F10\nFlick\nSync", 		10),
+		Button(x+11*w/12, y, w/12, h, "F12\nClear\nGame", 		12),
 	]
 
 #here is where the splash screen is executed
@@ -38,6 +56,9 @@ def splash_screen():
 	#top text
 	SS_TEXT = get_font(35).render("PRESS ANY KEY TO CONTINUE", True, "White")
 	SS_TEXT_RECT = SS_TEXT.get_rect(center=(640, 50))
+
+	timer_event = pygame.USEREVENT + 1
+	pygame.time.set_timer(timer_event, 3000)
 
 	#create the game loop
 	while True:
@@ -57,15 +78,14 @@ def splash_screen():
 			if event.type == pygame.KEYUP:
 				player_screen()
 
+			if event.type == timer_event:
+				player_screen()
+
 		pygame.display.update()
 
 #here is where the player screen is executed
 def player_screen():
 	pygame.display.set_caption("Player Screen")
-
-
-	#temp_text = get_font(35).render("PRESS ESC TO RETURN TO MAIN MENU", True, "White")
-	#temp_text_rect = temp_text.get_rect(center=(640, 50))
 
 	#create team top texts
 	team1_text = get_font(25).render("TEAM 1", True, "GREEN")
@@ -80,13 +100,13 @@ def player_screen():
 
 	#create buttons
 	buttons = create_buttons(0, 640, 1280, 80)
+
 	
 	#game loop
 	while True:
 		
 		#draw text and refresh screen
 		SCREEN.fill("black")
-		#SCREEN.blit(temp_text, temp_text_rect)
 		SCREEN.blit(team1_text, team1_text_rect)
 		SCREEN.blit(team2_text, team2_text_rect)
 		
@@ -96,6 +116,7 @@ def player_screen():
 		#draw buttons
 		for button in buttons:
 			button.draw(SCREEN)
+						
 		
 		pygame.display.flip()
 		
@@ -109,6 +130,9 @@ def player_screen():
 			#handle button presses
 			for button in buttons:
 				button.handle_event(event)
+				if button.active:
+					button_functions(button.button_id)
+					button.active = not button.active
 
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -120,6 +144,10 @@ def player_screen():
 					splash_screen()
 
 		pygame.display.update()
+
+def action_screen():
+	pygame.display.set_caption("Action Screen")
+
 
 #execute splash screen initially 
 splash_screen()

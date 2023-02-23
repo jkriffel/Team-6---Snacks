@@ -2,8 +2,6 @@ import pygame
 from database import *
 from textbox import TextBox
 
-pygame.init()
-
 class Player_Table:
 
 	def __init__(self, screen, x, y, w, h):
