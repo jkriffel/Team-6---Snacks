@@ -1,5 +1,5 @@
 import pygame, sys
-from player_table import Action_Table,Timer_Box,Action_Box
+from player_table import Action_Table,Timer_Box,Action_Box,Total_Box
 from button import Button
 from database import *
 
@@ -19,6 +19,8 @@ def action_screen():
 	CLOCK_HEIGHT = 1000
 	ACTION_WIDTH = 300
 	ACTION_HEIGHT = 4500
+	TEAM_BOX_WIDTH = 150
+	TEAM_BOX_HEIGHT = 800
 
 	# Font that Josh likes -_-
 	def get_font(size): # Returns Press-Start-2P in the desired size
@@ -55,6 +57,12 @@ def action_screen():
 	action_box_text = get_font(25).render("PLAYER EVENTS", True, "BLUE")
 	action_box_text_rect = action_box_text.get_rect(topleft=(SCREEN_CENTER_X - 160, SCREEN_CENTER_Y - 110))
 
+	# create team score text 
+	team1_score_text = get_font(25).render("TEAM 1 SCORE", True, "GREEN")
+	team2_score_text = get_font(25).render("TEAM 2 SCORE", True, "RED")
+	team1_score_text_rect = team1_score_text.get_rect(topleft=(SCREEN_CENTER_X - 625, SCREEN_CENTER_Y + 260))
+	team2_score_text_rect = team2_score_text.get_rect(topleft=(SCREEN_CENTER_X + 175, SCREEN_CENTER_Y + 260))
+
 	# create tables for the player name and score 
 	red_team_table = Action_Table(SCREEN, SCREEN_CENTER_X - 625, SCREEN_CENTER_Y - 270, LEFT_WIDTH, LEFT_HEIGHT, RIGHT_WIDTH, RIGHT_HEIGHT)
 	green_team_table = Action_Table(SCREEN, SCREEN_CENTER_X + 175, SCREEN_CENTER_Y - 270, LEFT_WIDTH, LEFT_HEIGHT, RIGHT_WIDTH, RIGHT_HEIGHT)
@@ -64,6 +72,10 @@ def action_screen():
 
 	# create box for action events to go into
 	action_box = Action_Box(SCREEN,SCREEN_CENTER_X - 150, SCREEN_CENTER_Y - 370, ACTION_WIDTH, ACTION_HEIGHT)
+
+	# create box for total team score
+	team1_score_box = Total_Box(SCREEN, SCREEN_CENTER_X - 315, SCREEN_CENTER_Y + 190, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT)
+	team2_score_box = Total_Box(SCREEN, SCREEN_CENTER_X + 485, SCREEN_CENTER_Y + 190, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT)
 
 
 	while True:
@@ -83,6 +95,9 @@ def action_screen():
 		SCREEN.blit(team2_score, team2_score_rect)
 		# Action box text
 		SCREEN.blit(action_box_text,action_box_text_rect)
+		# Team score text 
+		SCREEN.blit(team1_score_text,team1_score_text_rect)
+		SCREEN.blit(team2_score_text,team2_score_text_rect)
 		# Player name & Player Score box 
 		red_team_table.draw(SCREEN)
 		green_team_table.draw(SCREEN)
@@ -90,6 +105,9 @@ def action_screen():
 		countdown_timer_box.draw(SCREEN)
 		# Action box
 		action_box.draw(SCREEN)
+		# Total team score boxes
+		team1_score_box.draw(SCREEN)
+		team2_score_box.draw(SCREEN)
 
 		pygame.display.flip()
 

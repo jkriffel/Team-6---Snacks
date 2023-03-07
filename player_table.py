@@ -147,3 +147,18 @@ class Action_Box:
 		for i in range(len(self.table)):
 			for j in range(len(self.table[i])):
 				self.table[i][j].draw(screen)
+
+class Total_Box:
+	def __init__(self, screen, x, y,w,h):
+		self.table = []
+		left_box = TextBox(screen,x,y +(h/15), w, h/15,0)
+		#right_box = TextBox(screen,x,y +(h/15), 3 * w/4 - 5, h/15,0)
+		right_box = TextBox(screen,x,y +(h/15), 0, 0,0)
+		self.table.append([ left_box, right_box])
+		self.screen = screen
+
+	#Iterates through all rectangle entities in table and draws
+	def draw(self, screen):
+		for i in range(len(self.table)):
+			for j in range(len(self.table[i])):
+				self.table[i][j].draw(screen)
