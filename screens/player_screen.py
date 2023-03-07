@@ -30,16 +30,27 @@ def player_screen():
 
 	pygame.display.set_caption("Player Screen")
 
-	#create team top texts
+	# create team top texts
 	team1_text = get_font(25).render("TEAM 1", True, "GREEN")
 	team2_text = get_font(25).render("TEAM 2", True, "RED")
-	team1_text_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 310))
-	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 550 - TABLE_WIDTH, SCREEN_CENTER_Y - 310))
+	team1_text_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 340))
+	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 550 - TABLE_WIDTH, SCREEN_CENTER_Y - 340))
 
-	#call table function to create player entries
+	# create player id top text
+	team1_id_text = get_font(25).render("ID", True, "GREEN")
+	team2_id_text = get_font(25).render("ID", True, "RED")
+	team1_id_text_rect = team1_id_text.get_rect(topleft=(SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 300))
+	team2_id_text_rect = team2_id_text.get_rect(topleft=(SCREEN_CENTER_X + 450 - TABLE_WIDTH, SCREEN_CENTER_Y - 300))
 
-	red_team_table = Player_Table(SCREEN, SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT)
-	green_team_table = Player_Table(SCREEN, SCREEN_CENTER_X + 100, SCREEN_CENTER_Y - 285, TABLE_WIDTH, TABLE_HEIGHT)
+	# create player codename text
+	team1_codename_text = get_font(25).render("CODENAME", True, "GREEN")
+	team2_codename_text = get_font(25).render("CODENAME", True, "RED")
+	team1_codename_text_rect = team1_codename_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 300))
+	team2_codename_text_rect = team2_codename_text.get_rect(topleft=(SCREEN_CENTER_X + 550 - TABLE_WIDTH, SCREEN_CENTER_Y - 300))
+
+	# call table function to create player entries
+	red_team_table = Player_Table(SCREEN, SCREEN_CENTER_X - 500, SCREEN_CENTER_Y - 265, TABLE_WIDTH, TABLE_HEIGHT)
+	green_team_table = Player_Table(SCREEN, SCREEN_CENTER_X + 100, SCREEN_CENTER_Y - 265, TABLE_WIDTH, TABLE_HEIGHT)
 
 	#create buttons
 	buttons = create_buttons(0, 640, 1280, 80)
@@ -47,11 +58,22 @@ def player_screen():
 	#game loop
 	while True:
 		
-		#draw text and refresh screen
+		# Background Color
 		SCREEN.fill("black")
+
+		# Top Text
 		SCREEN.blit(team1_text, team1_text_rect)
 		SCREEN.blit(team2_text, team2_text_rect)
-		
+
+		# Player Id text
+		SCREEN.blit(team1_id_text, team1_id_text_rect)
+		SCREEN.blit(team2_id_text, team2_id_text_rect)
+
+		# Player Codename text
+		SCREEN.blit(team1_codename_text, team1_codename_text_rect)
+		SCREEN.blit(team2_codename_text, team2_codename_text_rect)
+
+		# Player ID & Codename boxes
 		red_team_table.draw(SCREEN)
 		green_team_table.draw(SCREEN)
 
