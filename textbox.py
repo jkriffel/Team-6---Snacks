@@ -3,43 +3,27 @@ from database import *
 
 pygame.init()
 COLOR_DISABLED = pygame.Color('White')
-COLOR_ENABLED = pygame.Color('Darkgrey')
+COLOR_ENABLED = pygame.Color('Purple')
 FONT = pygame.font.Font("./assets/font.ttf", 20)
 
 class TextBox:
 
-	def __init__(self, screen, x, y, w, h, text_limit):
+	def __init__(self, screen, x, y, w, h, box_id):
 		self.rect = pygame.Rect(x, y, w, h)
 		self.color = COLOR_DISABLED
 		self.text = ''
 		self.text_draw = FONT.render('', True, self.color)
 		self.active = False
 		self.screen = screen
-		self.text_limit = text_limit
+		self.box_id = box_id
+		#box_ID = 0 is the small left box while 1 is the larger right box
+		if box_id == 0:
+			self.text_limit = 3
+		else:
+			self.text_limit = 10
 
 	def draw(self, screen):
+		self.color = COLOR_ENABLED if self.active else COLOR_DISABLED
+		self.text_draw = FONT.render(self.text, True, self.color)
 		screen.blit(self.text_draw, (self.rect.x+5, self.rect.y+5))
 		pygame.draw.rect(screen, self.color, self.rect, 3)
-
-	def handle_event(self, event):
-		self.color = COLOR_ENABLED if self.active else COLOR_DISABLED
-		if event.type == pygame.MOUSEBUTTONDOWN:
-			# check for input box click
-			if self.rect.collidepoint(event.pos):
-				self.active = not self.active
-			else:
-				self.active = False
-		# when a text box is active, process key inputs
-		if event.type == pygame.KEYDOWN and self.active:
-
-			#exit text box
-			if event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:
-				self.active = not self.active
-				
-
-			elif event.key == pygame.K_BACKSPACE:
-				self.text = self.text[:-1]
-			elif len(self.text) < self.text_limit:
-				self.text += event.unicode
-			# re draw the text.
-			self.text_draw = FONT.render(self.text, True, self.color)

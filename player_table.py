@@ -1,75 +1,60 @@
 import pygame
 from database import *
-
-pygame.init()
-COLOR_DISABLED = pygame.Color('White')
-COLOR_ENABLED = pygame.Color('Purple')
-FONT = pygame.font.Font("./assets/font.ttf", 20)
+from textbox import TextBox
 
 class Player_Table:
 
-	def __init__(self, screen, x, y, w, h, text_limit):
-		self.rect = []
+	def __init__(self, screen, x, y, w, h):
+		self.table = []
+		#create a 2x15 table
 		for i in range (15):
-			#left_box = pygame.Rect(x, y + (h/15 * i), w/4, h/15)
-			#right_box = pygame.Rect(x + w/4 + 5, y + (h/15 * i), (3 * w/4 - 5), h/15)
-			self.rect.append([ pygame.Rect(x, y + (h/15 * i), w/4, h/15), pygame.Rect(x + w/4 + 5, y + (h/15 * i), (3 * w/4 - 5), h/15)])
-			#del left_box
-			#del right_box
-
-		self.info = {}
-		self.color = []
-		for i in range (15):
-			self.color.append([COLOR_DISABLED, COLOR_DISABLED]) 
-		self.text = []
-		for i in range (15):
-			self.text.append(['', ''])
-			
-		self.text_draw = FONT.render('', True, COLOR_DISABLED)
-		self.active = []
-		for i in range (15):
-			self.active.append([False, False]) 
+			left_box = TextBox(screen, x, y + (h/15 * i), w/4, h/15, 0)
+			right_box = TextBox(screen, x + w/4 + 5, y + (h/15 * i), (3 * w/4 - 5), h/15, 1)
+			self.table.append([ left_box, right_box])
 		self.screen = screen
-		self.text_limit = text_limit
+
 	#Iterates through all rectangle entities in table and draws
 	def draw(self, screen):
-		for i in range(len(self.rect)):
-			for j in range(len(self.rect[i])):
-				self.text_draw = FONT.render(self.text[i][j], True, self.color[i][j])
-				screen.blit(self.text_draw, (self.rect[i][j].x+5, self.rect[i][j].y+5))
-				pygame.draw.rect(screen, self.color[i][j], self.rect[i][j], 3)
+		for i in range(len(self.table)):
+			for j in range(len(self.table[i])):
+				self.table[i][j].draw(screen)
+
 	#Handles input events
 	def handle_event(self, event):
-		for i in range(len(self.rect)):
-			for j in range(len(self.rect[i])):
-				self.color[i][j] = COLOR_ENABLED if self.active[i][j] else COLOR_DISABLED
+		for i in range(len(self.table)):
+			for j in range(len(self.table[i])):
 				if event.type == pygame.MOUSEBUTTONDOWN:
+
 					# check for input box click
-					if self.rect[i][j].collidepoint(event.pos):
-						self.active[i][j] = not self.active[i][j]
+					if self.table[i][j].rect.collidepoint(event.pos):
+						self.table[i][j].active = not self.table[i][j].active
 					else:
-						self.active[i][j] = False
+						self.table[i][j].active = False
+
 				# when a text[i][j] box is active[i][j], process key inputs
-				if event.type == pygame.KEYDOWN and self.active[i][j]:
+				if event.type == pygame.KEYDOWN and self.table[i][j].active:
 
 					#If enter key pressed access the database and exit textbox
 					if event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:
-						if self.text[i][0] != '' and self.active[i][0]:
-							self.text[i][1] = get_user_codename(self.text[i][0]) 
-						if self.text[i][0] != '' and self.active[i][1]:
-							create_user(self.text[i][0], self.text[i][1])
-							
-						self.active[i][j] = not self.active[i][j]
+						
+						#process events after user enters a ID
+						if self.table[i][0].text != '' and self.table[i][0].active:
+							self.table[i][1].text = get_user_codename(self.table[i][0].text) 
+
+						#process events after user enters a codename
+						if self.table[i][0].text != '' and self.table[i][1].active:
+							create_user(self.table[i][0].text, self.table[i][1].text)
+						
+						self.table[i][j].active = not self.table[i][j].active
 					
 					#Handle text input
 					elif event.key == pygame.K_BACKSPACE:
-						self.text[i][j] = self.text[i][j][:-1]
-					elif len(self.text[i][j]) < self.text_limit:
-						if not self.active[i][0]: 
-							self.text[i][j] += event.unicode
-						else:
-							if event.unicode.isnumeric():
-								self.text[i][j] += event.unicode
-					# re draw the text[i][j].
-				self.text_draw = FONT.render(self.text[i][j], True, self.color[i][j])
-				pygame.display.flip()
+						self.table[i][j].text = self.table[i][j].text[:-1]
+					
+					elif len(self.table[i][j].text) < self.table[i][j].text_limit:
+						if self.table[i][j].box_id == 1: 
+							self.table[i][j].text += event.unicode
+						elif self.table[i][j].box_id == 0 and event.unicode.isnumeric():
+							self.table[i][j].text += event.unicode
+				# re draw the texbox
+				self.table[i][j].draw(self.screen)
