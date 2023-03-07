@@ -1,5 +1,5 @@
 import pygame, sys
-from player_table import Player_Table,Action_Table,Timer_Box
+from player_table import Action_Table,Timer_Box,Action_Box
 from button import Button
 from database import *
 
@@ -17,6 +17,8 @@ def action_screen():
 	RIGHT_HEIGHT = 500
 	CLOCK_WIDTH = 150
 	CLOCK_HEIGHT = 1000
+	ACTION_WIDTH = 300
+	ACTION_HEIGHT = 4500
 
 	# Font that Josh likes -_-
 	def get_font(size): # Returns Press-Start-2P in the desired size
@@ -33,9 +35,9 @@ def action_screen():
 
 	# create countdown text (the count down needs to be implemented - kirby)
 	countdown_text_1 = get_font(25).render("THE GAME", True, "PURPLE")
-	countdown_text_2 = get_font(25).render("STARTS IN", True, "PURPLE")
+	countdown_text_2 = get_font(25).render("ENDS IN", True, "PURPLE")
 	countdown_text_1_rect = countdown_text_1.get_rect(topleft=(SCREEN_CENTER_X - 100, SCREEN_CENTER_Y - 340))
-	countdown_text_2_rect = countdown_text_2.get_rect(topleft=(SCREEN_CENTER_X - 110, SCREEN_CENTER_Y - 300))
+	countdown_text_2_rect = countdown_text_2.get_rect(topleft=(SCREEN_CENTER_X - 85, SCREEN_CENTER_Y - 300))
 
 	# create player codename text 
 	team1_codename = get_font(25).render("CODENAME", True, "GREEN")
@@ -49,12 +51,19 @@ def action_screen():
 	team1_score_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 300, SCREEN_CENTER_Y - 300))
 	team2_score_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 850 - TABLE_WIDTH, SCREEN_CENTER_Y - 300))
 
+	# create action box text
+	action_box_text = get_font(25).render("PLAYER EVENTS", True, "BLUE")
+	action_box_text_rect = action_box_text.get_rect(topleft=(SCREEN_CENTER_X - 160, SCREEN_CENTER_Y - 110))
+
 	# create tables for the player name and score 
 	red_team_table = Action_Table(SCREEN, SCREEN_CENTER_X - 625, SCREEN_CENTER_Y - 270, LEFT_WIDTH, LEFT_HEIGHT, RIGHT_WIDTH, RIGHT_HEIGHT)
 	green_team_table = Action_Table(SCREEN, SCREEN_CENTER_X + 175, SCREEN_CENTER_Y - 270, LEFT_WIDTH, LEFT_HEIGHT, RIGHT_WIDTH, RIGHT_HEIGHT)
 
 	# create box for countdown to go into
 	countdown_timer_box = Timer_Box(SCREEN,SCREEN_CENTER_X - 75,SCREEN_CENTER_Y - 320, CLOCK_WIDTH, CLOCK_HEIGHT)
+
+	# create box for action events to go into
+	action_box = Action_Box(SCREEN,SCREEN_CENTER_X - 150, SCREEN_CENTER_Y - 370, ACTION_WIDTH, ACTION_HEIGHT)
 
 
 	while True:
@@ -72,11 +81,15 @@ def action_screen():
 		# Top Score Text
 		SCREEN.blit(team1_score, team1_score_rect)
 		SCREEN.blit(team2_score, team2_score_rect)
-		# Player name & Player Score text
+		# Action box text
+		SCREEN.blit(action_box_text,action_box_text_rect)
+		# Player name & Player Score box 
 		red_team_table.draw(SCREEN)
 		green_team_table.draw(SCREEN)
 		# Clock box 
 		countdown_timer_box.draw(SCREEN)
+		# Action box
+		action_box.draw(SCREEN)
 
 		pygame.display.flip()
 
