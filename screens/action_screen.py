@@ -3,7 +3,7 @@ from player_table import Action_Table,Timer_Box,Action_Box,Total_Box
 from button import Button
 from database import *
 
-def action_screen():
+def action_screen(player_tables):
 	pygame.init()
 
 	SCREEN = pygame.display.set_mode((1280, 720))
@@ -21,6 +21,19 @@ def action_screen():
 	ACTION_HEIGHT = 4500
 	TEAM_BOX_WIDTH = 150
 	TEAM_BOX_HEIGHT = 800
+
+	#data tracked in dictionary by name
+	red_team_scores = {}
+	green_team_scores = {}
+	#red team score initialization
+	for player_data in player_tables[0].table:
+		red_team_scores[player_data[1].text] = 0
+	#green team score initialization
+	for player_data in player_tables[1].table:
+		green_team_scores[player_data[1].text] = 0
+	
+	#clock for timer
+	clock = pygame.time.Clock()
 
 	# Font that Josh likes -_-
 	def get_font(size): # Returns Press-Start-2P in the desired size
@@ -40,6 +53,7 @@ def action_screen():
 	countdown_text_2 = get_font(25).render("ENDS IN", True, "PURPLE")
 	countdown_text_1_rect = countdown_text_1.get_rect(topleft=(SCREEN_CENTER_X - 100, SCREEN_CENTER_Y - 340))
 	countdown_text_2_rect = countdown_text_2.get_rect(topleft=(SCREEN_CENTER_X - 85, SCREEN_CENTER_Y - 300))
+
 
 	# create player codename text 
 	team1_codename = get_font(25).render("CODENAME", True, "GREEN")
@@ -110,6 +124,9 @@ def action_screen():
 		team2_score_box.draw(SCREEN)
 
 		pygame.display.flip()
+
+		#update timer
+		countdown_timer_box.update(clock.tick())
 
 		mouse_pos = pygame.mouse.get_pos()
 

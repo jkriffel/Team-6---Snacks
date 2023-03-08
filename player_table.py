@@ -119,22 +119,27 @@ class Action_Table:
 
 class Timer_Box:
 
-	def __init__(self, screen, x, y,w,h):
+	def __init__(self, screen, x, y, w, h):
 		self.table = []
-		left_box = TextBox(screen,x,y +(h/15), w, h/15,0)
-		#right_box = TextBox(screen,x,y +(h/15), 3 * w/4 - 5, h/15,0)
-		right_box = TextBox(screen,x,y +(h/15), 0, 0,0)
-		self.table.append([ left_box, right_box])
+		self.box = TextBox(screen,x,y +(h/15), w, h/15,0)
 		self.screen = screen
+		self.time_remaining = 360000
 
-	#Iterates through all rectangle entities in table and draws
 	def draw(self, screen):
-		for i in range(len(self.table)):
-			for j in range(len(self.table[i])):
-				self.table[i][j].draw(screen)
+		rounded_time = self.time_remaining+999
+		str_minutes = str(rounded_time//60000)
+		str_seconds = str((rounded_time%60000)//1000)
+		format_seconds = "0"+str_seconds if len(str_seconds)==1 else str_seconds
+		self.box.text = str_minutes+":"+format_seconds
+		self.box.draw(screen)
+	
+	def update(self, millis):
+		self.time_remaining = self.time_remaining - millis
+		if(self.time_remaining<=0):
+			self.time_remaining = 0
 
 class Action_Box:
-	def __init__(self, screen, x, y,w,h):
+	def __init__(self, screen, x, y, w, h):
 		self.table = []
 		left_box = TextBox(screen,x,y +(h/15), w, h/15,0)
 		#right_box = TextBox(screen,x,y +(h/15), 3 * w/4 - 5, h/15,0)
@@ -149,7 +154,7 @@ class Action_Box:
 				self.table[i][j].draw(screen)
 
 class Total_Box:
-	def __init__(self, screen, x, y,w,h):
+	def __init__(self, screen, x, y, w, h):
 		self.table = []
 		left_box = TextBox(screen,x,y +(h/15), w, h/15,0)
 		#right_box = TextBox(screen,x,y +(h/15), 3 * w/4 - 5, h/15,0)

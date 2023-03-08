@@ -105,7 +105,8 @@ def player_screen():
 					elif button.button_id == 5:
 						#start game and go to action_screen function
 						print("starting game lol")
-						return
+						#returns a tuple of the tables for game data
+						return (red_team_table, green_team_table)
 					elif button.button_id == 7:
 						print("I am also a useless button")
 					elif button.button_id == 8:

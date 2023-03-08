@@ -3,5 +3,5 @@ from screens.player_screen import *
 from screens.action_screen import *
 
 splash_screen()
-player_screen()
-action_screen() 
+player_tables = player_screen()
+action_screen(player_tables) 
