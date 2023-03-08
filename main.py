@@ -1,7 +1,9 @@
 from screens.splash_screen import *
 from screens.player_screen import *
 from screens.action_screen import *
+from screens.countdown_screen import *
 
 splash_screen()
 player_tables = player_screen()
-action_screen(player_tables) 
+countdown_screen()
+action_screen(player_tables)  
