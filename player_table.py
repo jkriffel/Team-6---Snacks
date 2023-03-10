@@ -62,6 +62,12 @@ class Player_Table:
 
 class Action_Table:
 
+	# -- NEEDS TO BE DONE ----------------------------------------------------------------------------------------- #
+	# Make a def method here such as handle_event, to check if red_player_table.table[i][j] (& green) is full.. 	#
+	# If full, pull from database with get_user_codename method in the database.py file								#
+	# If not full you need to just leave the box blank, this will probably require a nested for						#
+	# ------------------------------------------------------------------------------------------------------------- #	
+
 	def __init__(self, screen, x, y,LW,LH,RW,RH):
 		self.table = []
 		#create a 2x15 table
