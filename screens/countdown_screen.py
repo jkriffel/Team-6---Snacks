@@ -1,5 +1,4 @@
 import pygame, sys
-from PIL import Image 
 
 def countdown_screen():
 
