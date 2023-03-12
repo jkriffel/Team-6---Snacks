@@ -35,6 +35,8 @@ To run the game:
 ```
 $ python main.py 
 ```
+To query the database on the Player Entry Screen, press ENTER after typing in an ID or Codename to add or get information from Heroku.
+
 ## File and Folder Descriptions
 * button.py - The button class. This class allows for the creation of buttons that when pressed, perform an action assigned to them.
 * database.py - This class handles interactions with the Heroku database including: connection testing, player creation, and codename retrieval.
