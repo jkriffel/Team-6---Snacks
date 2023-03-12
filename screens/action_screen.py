@@ -3,6 +3,7 @@ from player_table import Action_Table,Timer_Box,Action_Box
 from button import Button
 from textbox import TextBox
 from database import *
+from pygame import mixer
 
 def action_screen(player_tables):
 	pygame.init()
@@ -32,10 +33,15 @@ def action_screen(player_tables):
 	#clock for timer
 	clock = pygame.time.Clock()
 
-	# Font
+	# font
 	def get_font(size): # Returns Press-Start-2P in the desired size
 		return pygame.font.Font("./assets/font.ttf", size)
 
+	# sound
+	mixer.init()
+	mixer.music.load("./assets/Track01.mp3")
+	mixer.music.set_volume(0.5)
+	
 
 	pygame.display.set_caption("Action Screen")
 
@@ -65,6 +71,9 @@ def action_screen(player_tables):
 
 	# create box for countdown to go into
 	countdown_timer_box = Timer_Box(SCREEN,SCREEN_CENTER_X - 32, SCREEN_CENTER_Y - 280, CLOCK_WIDTH, CLOCK_HEIGHT)
+
+	# play the sound track
+	mixer.music.play()
 
 	# create box for action events to go into
 	action_box = Action_Box(SCREEN,SCREEN_CENTER_X - 160, SCREEN_CENTER_Y - 280, ACTION_WIDTH, ACTION_HEIGHT, 'Gauchinator Lazered Billy')
@@ -107,6 +116,7 @@ def action_screen(player_tables):
 
 		if countdown_timer_box.game_over == True:
 			countdown_text_1 = get_font(26).render("GAME OVER", True, "PURPLE")
+			mixer.music.stop()
 
 
 		mouse_pos = pygame.mouse.get_pos()
