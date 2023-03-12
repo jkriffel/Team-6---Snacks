@@ -32,14 +32,14 @@ def action_screen(player_tables):
 	#clock for timer
 	clock = pygame.time.Clock()
 
-	# Font that Josh likes -_- - cope and seeth - josh
+	# Font
 	def get_font(size): # Returns Press-Start-2P in the desired size
 		return pygame.font.Font("./assets/font.ttf", size)
 
 
 	pygame.display.set_caption("Action Screen")
 
-	# create countdown text (the count down needs to be implemented - kirby)
+	# create countdown text
 	countdown_text_1 = get_font(25).render("Game Time", True, "PURPLE")
 	countdown_text_1_rect = countdown_text_1.get_rect(topleft=(SCREEN_CENTER_X - 100, SCREEN_CENTER_Y - 310))
 
@@ -75,6 +75,7 @@ def action_screen(player_tables):
 	team1_score_box.text = '0'
 	team2_score_box.text = '0'
 
+
 	while True:
 		# Background Color
 		SCREEN.fill("black")
@@ -103,6 +104,10 @@ def action_screen(player_tables):
 
 		#update timer
 		countdown_timer_box.update(clock.tick())
+
+		if countdown_timer_box.game_over == True:
+			countdown_text_1 = get_font(26).render("GAME OVER", True, "PURPLE")
+
 
 		mouse_pos = pygame.mouse.get_pos()
 

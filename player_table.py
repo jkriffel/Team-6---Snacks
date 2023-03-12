@@ -103,6 +103,7 @@ class Timer_Box:
 		self.box = TextBox(screen, x, y, w, h, 0)
 		self.screen = screen
 		self.time_remaining = 360000
+		self.game_over = False
 
 	def draw(self, screen):
 		rounded_time = self.time_remaining+999
@@ -116,6 +117,7 @@ class Timer_Box:
 		self.time_remaining = self.time_remaining - millis
 		if(self.time_remaining<=0):
 			self.time_remaining = 0
+			self.game_over = True
 
 class Action_Box:
 	def __init__(self, screen, x, y, w, h, text):
