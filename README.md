@@ -2,11 +2,11 @@
 Laser tag game created with Python and a Heroku database
 
 ## Table of Contents
-* [General Info](https://github.com/jkriffel/Team-6---Snacks/edit/main/README.md#general-info)
-* [Technologies Used](https://github.com/jkriffel/Team-6---Snacks/edit/main/README.md#general-info#technologies-used)
-* [Setup](https://github.com/jkriffel/Team-6---Snacks/edit/main/README.md#general-info#setup)
-* [File Descriptions](https://github.com/jkriffel/Team-6---Snacks/edit/main/README.md#general-info#file-descriptions)
-* [Status](https://github.com/jkriffel/Team-6---Snacks/edit/main/README.md#general-info#status)
+* [General Info](#general-info)
+* [Technologies Used](#general-info#technologies-used)
+* [Setup](#general-info#setup)
+* [File Descriptions](#general-info#file-descriptions)
+* [Status](#general-info#status)
 
 ## General Info
 * Project Contributors: Zachary Anderson, Joshua Hollis, James Riffel, Maci Danner, Michael Logal, and Drew Grove
