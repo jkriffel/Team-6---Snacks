@@ -3,10 +3,11 @@ Laser tag game created with Python and a Heroku database
 
 ## Table of Contents
 * [General Info](#general-info)
-* [Technologies Used](#general-info#technologies-used)
-* [Setup](#general-info#setup)
-* [File Descriptions](#general-info#file-descriptions)
-* [Status](#general-info#status)
+* [Technologies Used](#technologies-used)
+* [Features](#features)
+* [Setup](#setup)
+* [File Descriptions](#file-descriptions)
+* [Status](#status)
 
 ## General Info
 * Project Contributors: Zachary Anderson, Joshua Hollis, James Riffel, Maci Danner, Michael Logal, and Drew Grove
