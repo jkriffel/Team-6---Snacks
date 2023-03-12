@@ -30,12 +30,6 @@ def player_screen():
 
 	pygame.display.set_caption("Player Screen")
 
-	# create team top texts
-	team1_text = get_font(25).render("TEAM 1", True, "GREEN")
-	team2_text = get_font(25).render("TEAM 2", True, "RED")
-	team1_text_rect = team1_text.get_rect(topleft=(SCREEN_CENTER_X - 400, SCREEN_CENTER_Y - 340))
-	team2_text_rect = team2_text.get_rect(topleft=(SCREEN_CENTER_X + 550 - TABLE_WIDTH, SCREEN_CENTER_Y - 340))
-
 	# create player id top text
 	team1_id_text = get_font(25).render("ID", True, "GREEN")
 	team2_id_text = get_font(25).render("ID", True, "RED")
@@ -60,10 +54,6 @@ def player_screen():
 		
 		# Background Color
 		SCREEN.fill("black")
-
-		# Top Text
-		SCREEN.blit(team1_text, team1_text_rect)
-		SCREEN.blit(team2_text, team2_text_rect)
 
 		# Player Id text
 		SCREEN.blit(team1_id_text, team1_id_text_rect)

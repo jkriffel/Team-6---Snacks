@@ -49,4 +49,9 @@ def countdown_screen():
             if event.type == timer_event:
                 pygame.display.quit()
                 return
+            #debug Skip stupid timer
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    pygame.display.quit()
+                    return
         pygame.display.update()
