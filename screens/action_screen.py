@@ -22,46 +22,29 @@ def action_screen(player_tables):
 	def get_font(size): # Returns Press-Start-2P in the desired size
 		return pygame.font.Font("./assets/font.ttf", size)
 
-	
 	def set_music():
 		# sound
 		mixer.init()
 
-		track1 = "./assets/Track01.mp3"
-		track2 = "./assets/Track02.mp3"
-		track3 = "./assets/Track03.mp3"
-		track4 = "./assets/Track04.mp3"
-		track6 = "./assets/Track06.mp3"
-		track7 = "./assets/Track07.mp3"
-		track8 = "./assets/Track08.mp3"
+		tracks = {
+		    1: "./assets/Track01.mp3",
+		    2: "./assets/Track02.mp3",
+		    3: "./assets/Track03.mp3",
+		    4: "./assets/Track04.mp3",
+		    5: "./assets/Track06.mp3",
+		    6: "./assets/Track06.mp3",
+		    7: "./assets/Track07.mp3",
+		    8: "./assets/Track08.mp3",
+		}
 
-		# picking a random track
-		musicTrack = random.randint(1,8)
+		# Picking a random track
+		track_number = random.randint(1, 8)
+		selected_track = tracks[track_number]
 
-		if musicTrack == 1:
-			mixer.music.load(track1)
-			print("track1")
-		elif musicTrack == 2:
-			mixer.music.load(track2)
-			print("track2")
-		elif musicTrack == 3:
-			mixer.music.load(track3)
-			print("track3")
-		elif musicTrack == 4:
-			mixer.music.load(track4)
-			print("track4")
-		elif musicTrack == 6 or musicTrack == 5:
-			mixer.music.load(track6)
-			print("track6")
-		elif musicTrack == 7:
-			mixer.music.load(track7)
-			print("track7")
-		elif musicTrack == 8:
-			mixer.music.load(track8)
-			print("track8")
+		mixer.music.load(selected_track)
+		print(f"track{track_number}")
 
 		mixer.music.set_volume(0.2)
-
 	#endregion
 
 	#data tracked in dictionary by name

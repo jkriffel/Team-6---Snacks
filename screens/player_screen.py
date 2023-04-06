@@ -88,7 +88,7 @@ def player_screen():
 					if button.button_id == 1:
 						print("entering edit mode")
 					elif button.button_id == 2:
-						print("Gane Parameters")
+						print("Game Parameters")
 					elif button.button_id == 3:
 						print("I am a useless button")
 					elif button.button_id == 5:
