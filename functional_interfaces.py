@@ -34,6 +34,7 @@ class TextBox:
 		screen.blit(self.text_draw, (self.rect.x+5, self.rect.y+5))
 		pygame.draw.rect(screen, self.color, self.rect, 3)
 
+
 class Player_Table:
 
 	def __init__(self, screen, x, y, w, h):
@@ -50,6 +51,13 @@ class Player_Table:
 		for i in range(len(self.table)):
 			for j in range(len(self.table[i])):
 				self.table[i][j].draw(screen)
+
+	def info_to_json(self):
+		result = {}
+		for i in range(len(self.table)):
+			result[self.table[i][0].text] = self.table[i][1].text
+		return result
+
 
 	#Handles input events
 	def handle_event(self, event):

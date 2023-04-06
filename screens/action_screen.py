@@ -2,8 +2,9 @@ import pygame, sys, random
 from functional_interfaces import Action_Table,Timer_Box,Action_Box,TextBox
 from database import *
 from pygame import mixer
+import json
 
-def action_screen(player_tables):
+def action_screen():
 	pygame.init()
 
 	SCREEN = pygame.display.set_mode((1280, 720))
@@ -47,15 +48,24 @@ def action_screen(player_tables):
 		mixer.music.set_volume(0.2)
 	#endregion
 
-	#data tracked in dictionary by name
+	#open the JSON file and read the corresponding dictionaries into to variables
+	with open("table_data.json", "r") as file:
+		team_data = json.load(file)
+
+	#these dictionaries are formatted as 'ID': 'CODENAME'
+	green_team_data = team_data[0]
+	red_team_data = team_data[1]
+
+	#data tracked in dictionary by name this one becomes formatted as 'CODENAME': 'Score'
 	red_team_scores = {}
 	green_team_scores = {}
+
 	#red team score initialization
-	for player_data in player_tables[1].table:
-		red_team_scores[player_data[1].text] = 0
+	for player_data in red_team_data.values():
+		red_team_scores[player_data] = 0
 	#green team score initialization
-	for player_data in player_tables[0].table:
-		green_team_scores[player_data[1].text] = 0
+	for player_data in green_team_data.values():
+		green_team_scores[player_data] = 0
 	
 	#clock for timer
 	clock = pygame.time.Clock()

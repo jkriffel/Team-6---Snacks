@@ -1,6 +1,7 @@
 import pygame, sys
 from functional_interfaces import Player_Table, Button
 from database import *
+import json
 
 def player_screen():
 
@@ -26,6 +27,7 @@ def player_screen():
 			Button(x+9*w/12,  y, w/12, h, "F10\nFlick\nSync", 		10),
 			Button(x+11*w/12, y, w/12, h, "F12\nClear\nGame", 		12),
 		]
+		
 
 	pygame.display.set_caption("Player Screen")
 
@@ -47,6 +49,16 @@ def player_screen():
 
 	#create buttons
 	buttons = create_buttons(0, 640, 1280, 80)
+	button_actions = {
+					1: "entering edit mode",
+					2: "Game Parameters",
+					3: "I am a useless button",
+					5: "starting game lol",
+					7: "I am also a useless button",
+					8: "view game",
+					10: "flick sync",
+					12: "clear game",
+				}
 	
 	#game loop
 	while True:
@@ -84,27 +96,19 @@ def player_screen():
 			for button in buttons:
 				button.handle_event(event)
 				if button.active:
-					#I actually hate this length of code with a burning passion, if anyone else has ideas please implement
-					if button.button_id == 1:
-						print("entering edit mode")
-					elif button.button_id == 2:
-						print("Game Parameters")
-					elif button.button_id == 3:
-						print("I am a useless button")
-					elif button.button_id == 5:
-						#start game and go to action_screen function
-						print("starting game lol")
-						#returns a tuple of the tables for game data
-						return (red_team_table, green_team_table)
-					elif button.button_id == 7:
-						print("I am also a useless button")
-					elif button.button_id == 8:
-						print("view game")
-					elif button.button_id == 10:
-						print("flick sync")
-					elif button.button_id == 12:
-						print("clear game")
 
+					if button.button_id in button_actions:
+							print(button_actions[button.button_id])
+
+							if button.button_id == 5:
+								table_data = [red_team_table.info_to_json(), green_team_table.info_to_json()]
+								with open("table_data.json", "w") as json_file:
+									json.dump(table_data, json_file, indent=4)
+								pygame.display.quit()
+								return
+							
+							else:
+									print(f"No real action for button {button.button_id}")
 					button.active = not button.active
 
 
