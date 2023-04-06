@@ -1,6 +1,5 @@
 import pygame, sys
-from player_table import Player_Table
-from button import Button
+from functional_interfaces import Player_Table, Button
 from database import *
 
 def player_screen():
