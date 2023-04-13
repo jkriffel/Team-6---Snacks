@@ -152,7 +152,7 @@ def action_screen():
 			message = "Wall Lasered Billy"
 			action_box.text = action_box.text+"\n"+message
 			#maybe put max lines functionality inside the action_box class?
-			max_lines = 32
+			max_lines = 16
 			if action_box.text.count("\n")>=max_lines:
 				action_box.text = action_box.text[action_box.text.find("\n")+1:]
 			players = message.split(" Lasered ")
