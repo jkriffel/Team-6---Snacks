@@ -165,9 +165,11 @@ class Action_Box:
 
 	#Iterates through all rectangle entities in table and draws
 	def draw(self, screen):
-		self.text_render = self.font.render(self.text, True, pygame.Color("White"))
-		self.text_rect = self.text_render.get_rect(midtop=(self.rect.x + self.w/2, self.rect.y + 60))
-		screen.blit(self.text_render, self.text_rect)
+		lines = self.text.split("\n")
+		for i in range(len(lines)):
+			self.text_render = self.font.render(lines[i], True, pygame.Color("White"))
+			self.text_rect = self.text_render.get_rect(midtop=(self.rect.x + self.w/2, self.rect.y + 60 + 15*i))
+			screen.blit(self.text_render, self.text_rect)
 		pygame.draw.rect(screen, pygame.Color('White'), self.rect, 3)
 
 class Button:

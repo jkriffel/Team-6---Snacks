@@ -104,7 +104,7 @@ def action_screen():
 	mixer.music.play()
 
 	# create box for action events to go into
-	action_box = Action_Box(SCREEN,SCREEN_CENTER_X - 160, SCREEN_CENTER_Y - 280, ACTION_WIDTH, ACTION_HEIGHT, 'Gauchinator Lazered Billy')
+	action_box = Action_Box(SCREEN,SCREEN_CENTER_X - 160, SCREEN_CENTER_Y - 280, ACTION_WIDTH, ACTION_HEIGHT, 'Game Started')
 
 	# create box for total team score
 	team1_score_box = TextBox(SCREEN, SCREEN_CENTER_X - 298, SCREEN_CENTER_Y + 255, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT, 1)
@@ -145,6 +145,25 @@ def action_screen():
 		if countdown_timer_box.game_over == True:
 			countdown_text_1 = get_font(26).render("GAME OVER", True, "PURPLE")
 			mixer.music.stop()
+
+		#get message and update scores
+		if not(countdown_timer_box.game_over) and random.random()<0.002:
+			#this will simulate a message. it does not receive a message.
+			message = "Wall Lasered Billy"
+			action_box.text = action_box.text+"\n"+message
+			#maybe put max lines functionality inside the action_box class?
+			max_lines = 32
+			if action_box.text.count("\n")>=max_lines:
+				action_box.text = action_box.text[action_box.text.find("\n")+1:]
+			players = message.split(" Lasered ")
+			if players[0] in list(red_team_table.player_data):
+				loc = list(red_team_table.player_data).index(players[0])
+				red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
+				team2_score_box.text = str(1+int(team2_score_box.text))
+			elif players[0] in list(green_team_table.player_data):
+				loc = list(green_team_table.player_data).index(players[0])
+				green_team_table.table[loc][1].text = str(1+int(green_team_table.table[loc][1].text))
+				team1_score_box.text = str(1+int(team1_score_box.text))
 
 
 		mouse_pos = pygame.mouse.get_pos()

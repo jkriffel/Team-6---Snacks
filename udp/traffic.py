@@ -64,3 +64,5 @@ def random_traffic():
 		time.sleep(random.randint(1,3))
 		
 	print("program complete")
+
+#random_traffic()
