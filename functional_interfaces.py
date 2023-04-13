@@ -172,6 +172,11 @@ class Action_Box:
 			screen.blit(self.text_render, self.text_rect)
 		pygame.draw.rect(screen, pygame.Color('White'), self.rect, 3)
 
+	def add_message(self, message, max_lines=16):
+		self.text += f"\n{message}"
+		if self.text.count("\n") >= max_lines:
+			self.text = self.text[self.text.find("\n")+1:]
+
 class Button:
 
 	def __init__(self, x, y, w, h, text, button_id):

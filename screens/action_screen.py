@@ -46,15 +46,18 @@ def action_screen():
 		print(f"track{track_number}")
 
 		mixer.music.set_volume(0.2)
+
+	def update_player_score(player_name, ):
+		pass
 	#endregion
 
 	#open the JSON file and read the corresponding dictionaries into to variables
 	with open("table_data.json", "r") as file:
-		team_data = json.load(file)
+		team_data_from_json = json.load(file)
 
 	#these dictionaries are formatted as 'ID': 'CODENAME'
-	green_team_data = team_data[0]
-	red_team_data = team_data[1]
+	green_team_data = team_data_from_json[0]
+	red_team_data = team_data_from_json[1]
 
 	#data tracked in dictionary by name this one becomes formatted as 'CODENAME': 'Score'
 	red_team_scores = {}
@@ -78,20 +81,20 @@ def action_screen():
 	countdown_text_1_rect = countdown_text_1.get_rect(topleft=(SCREEN_CENTER_X - 100, SCREEN_CENTER_Y - 310))
 
 	# create player codename text 
-	team1_codename = get_font(25).render("Team 1", True, "GREEN")
-	team2_codename = get_font(25).render("Team 2", True, "RED")
-	team1_codename_rect = team1_codename.get_rect(topleft=(SCREEN_CENTER_X - 565, SCREEN_CENTER_Y - 300))
-	team2_codename_rect = team2_codename.get_rect(topleft=(SCREEN_CENTER_X + 585 - TABLE_WIDTH, SCREEN_CENTER_Y - 300))
+	green_team_codename = get_font(25).render("Team 1", True, "GREEN")
+	red_team_codename = get_font(25).render("Team 2", True, "RED")
+	green_team_codename_rect = green_team_codename.get_rect(topleft=(SCREEN_CENTER_X - 565, SCREEN_CENTER_Y - 300))
+	red_team_codename_rect = red_team_codename.get_rect(topleft=(SCREEN_CENTER_X + 585 - TABLE_WIDTH, SCREEN_CENTER_Y - 300))
 
 	# create action box text
 	action_box_text = get_font(25).render("Player Events", True, "PURPLE")
 	action_box_text_rect = action_box_text.get_rect(topleft=(SCREEN_CENTER_X - 142, SCREEN_CENTER_Y + 275))
 
 	# create team score text 
-	team1_score_text = get_font(25).render("SCORE", True, "GREEN")
-	team2_score_text = get_font(25).render("SCORE", True, "RED")
-	team1_score_text_rect = team1_score_text.get_rect(topleft=(SCREEN_CENTER_X - 440, SCREEN_CENTER_Y + 255))
-	team2_score_text_rect = team2_score_text.get_rect(topleft=(SCREEN_CENTER_X + 365, SCREEN_CENTER_Y + 255))
+	green_team_score_text = get_font(25).render("SCORE", True, "GREEN")
+	red_team_score_text = get_font(25).render("SCORE", True, "RED")
+	green_team_score_text_rect = green_team_score_text.get_rect(topleft=(SCREEN_CENTER_X - 440, SCREEN_CENTER_Y + 255))
+	red_team_score_text_rect = red_team_score_text.get_rect(topleft=(SCREEN_CENTER_X + 365, SCREEN_CENTER_Y + 255))
 
 	# create tables for the player name and score 
 	green_team_table   = Action_Table(SCREEN, SCREEN_CENTER_X - 565, SCREEN_CENTER_Y - 270, TABLE_WIDTH, TABLE_HEIGHT, green_team_scores)
@@ -107,10 +110,10 @@ def action_screen():
 	action_box = Action_Box(SCREEN,SCREEN_CENTER_X - 160, SCREEN_CENTER_Y - 280, ACTION_WIDTH, ACTION_HEIGHT, 'Game Started')
 
 	# create box for total team score
-	team1_score_box = TextBox(SCREEN, SCREEN_CENTER_X - 298, SCREEN_CENTER_Y + 255, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT, 1)
-	team2_score_box = TextBox(SCREEN, SCREEN_CENTER_X + 502, SCREEN_CENTER_Y + 255, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT, 1)
-	team1_score_box.text = '0'
-	team2_score_box.text = '0'
+	green_score_box = TextBox(SCREEN, SCREEN_CENTER_X - 298, SCREEN_CENTER_Y + 255, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT, 1)
+	red_score_box = TextBox(SCREEN, SCREEN_CENTER_X + 502, SCREEN_CENTER_Y + 255, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT, 1)
+	green_score_box.text = '0'
+	red_score_box.text = '0'
 
 
 	while True:
@@ -119,13 +122,13 @@ def action_screen():
 		# Counterdown timer text
 		SCREEN.blit(countdown_text_1,countdown_text_1_rect)
 		# Player Codename Text
-		SCREEN.blit(team1_codename, team1_codename_rect)
-		SCREEN.blit(team2_codename, team2_codename_rect)
+		SCREEN.blit(green_team_codename, green_team_codename_rect)
+		SCREEN.blit(red_team_codename, red_team_codename_rect)
 		# Action box text
 		SCREEN.blit(action_box_text,action_box_text_rect)
 		# Team score text 
-		SCREEN.blit(team1_score_text,team1_score_text_rect)
-		SCREEN.blit(team2_score_text,team2_score_text_rect)
+		SCREEN.blit(green_team_score_text,green_team_score_text_rect)
+		SCREEN.blit(red_team_score_text,red_team_score_text_rect)
 		# Player name & Player Score box 
 		red_team_table.draw(SCREEN)
 		green_team_table.draw(SCREEN)
@@ -134,8 +137,8 @@ def action_screen():
 		# Action box
 		action_box.draw(SCREEN)
 		# Total team score boxes
-		team1_score_box.draw(SCREEN)
-		team2_score_box.draw(SCREEN)
+		green_score_box.draw(SCREEN)
+		red_score_box.draw(SCREEN)
 
 		pygame.display.flip()
 
@@ -146,24 +149,33 @@ def action_screen():
 			countdown_text_1 = get_font(26).render("GAME OVER", True, "PURPLE")
 			mixer.music.stop()
 
+		team_tables = {
+			'Red': red_team_table,
+			'Green': green_team_table
+		}
+
 		#get message and update scores
-		if not(countdown_timer_box.game_over) and random.random()<0.002:
+		if not(countdown_timer_box.game_over) and random.random() < 0.002:
 			#this will simulate a message. it does not receive a message.
 			message = "Wall Lasered Billy"
-			action_box.text = action_box.text+"\n"+message
-			#maybe put max lines functionality inside the action_box class?
-			max_lines = 16
-			if action_box.text.count("\n")>=max_lines:
-				action_box.text = action_box.text[action_box.text.find("\n")+1:]
+			action_box.add_message(message)
+			#splices out player names from message string
 			players = message.split(" Lasered ")
-			if players[0] in list(red_team_table.player_data):
+
+			if players[0] in team_tables['Red'].player_data:
 				loc = list(red_team_table.player_data).index(players[0])
 				red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
-				team2_score_box.text = str(1+int(team2_score_box.text))
-			elif players[0] in list(green_team_table.player_data):
-				loc = list(green_team_table.player_data).index(players[0])
-				green_team_table.table[loc][1].text = str(1+int(green_team_table.table[loc][1].text))
-				team1_score_box.text = str(1+int(team1_score_box.text))
+				red_score_box.text = str(1+int(red_score_box.text))
+
+			elif players[0] in team_tables['Green'].player_data:
+				loc = list(red_team_table.player_data).index(players[0])
+				red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
+				red_score_box.text = str(1+int(red_score_box.text))
+
+			#elif players[0] in list(green_team_table.player_data):
+			#	loc = list(green_team_table.player_data).index(players[0])
+			#	green_team_table.table[loc][1].text = str(1+int(green_team_table.table[loc][1].text))
+			#	green_score_box.text = str(1+int(green_score_box.text))
 
 
 		mouse_pos = pygame.mouse.get_pos()
