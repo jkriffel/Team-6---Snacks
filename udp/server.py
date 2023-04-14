@@ -11,7 +11,6 @@ def start_server():
 
 	# Create a datagram socket
 	UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-	UDPServerSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 	# Bind to address and ip
 	UDPServerSocket.bind((localIP, localPort))
@@ -45,7 +44,7 @@ def start_server():
 	red2 = str(redID[1])
 
 	# Generating a number of events 
-	num_events = random.randint(10,20)
+	num_events = random.randint(20,40)
 
 	# create the socket again... don't ask
 	UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
@@ -74,7 +73,7 @@ def start_server():
 
 		# Rather than printing to console, put into action screen
 		print(message)
+		time.sleep(random.randint(2,5))
 		UDPServerSocket.sendto(str.encode(str(message)), (localIP, 7501))
-		time.sleep(random.randint(1,3))
 
 #start_server()

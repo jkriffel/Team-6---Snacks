@@ -37,8 +37,6 @@ def action_screen():
 
 		# Create datagram socket
 		UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-		UDPClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
 
 		message = "From Client To Server"
 		UDPClientSocket.sendto(message.encode(), (serverIP, serverPort))
@@ -237,9 +235,9 @@ def action_screen():
 						red_score_box.text = str(1+int(red_score_box.text))
 
 					elif players[0] in team_tables['Green'].player_data:
-						loc = list(red_team_table.player_data).index(players[0])
-						red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
-						red_score_box.text = str(1+int(red_score_box.text))
+						loc = list(green_team_table.player_data).index(players[0])
+						green_team_table.table[loc][1].text = str(1+int(green_team_table.table[loc][1].text))
+						green_score_box.text = str(1+int(green_score_box.text))
 
 		
 		pygame.display.update()
