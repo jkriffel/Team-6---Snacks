@@ -1,13 +1,18 @@
 import pygame, sys, random
 from functional_interfaces import Action_Table,Timer_Box,Action_Box,TextBox
 from database import *
+import socket
+from udp.server import start_server
 from pygame import mixer
+import queue
+import threading
 import json
 
 def action_screen():
 	pygame.init()
 
 	SCREEN = pygame.display.set_mode((1280, 720))
+	PLAYER_EVENT = pygame.USEREVENT + 1
 	SCREEN_CENTER_X = 1280/2
 	SCREEN_CENTER_Y = 720/2
 	TABLE_WIDTH = 350
@@ -19,12 +24,55 @@ def action_screen():
 	TEAM_BOX_WIDTH = TABLE_WIDTH / 4
 	TEAM_BOX_HEIGHT = TABLE_HEIGHT / 15
 
-	#region functions
+#region functions
+
+	#create_client
+	def create_client():
+
+		serverIP     = "127.0.0.1"
+		serverPort   = 7500
+
+		localIP     = "127.0.0.1"
+		localPort   = 7501
+
+		# Create datagram socket
+		UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+		UDPClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+
+		message = "From Client To Server"
+		UDPClientSocket.sendto(message.encode(), (serverIP, serverPort))
+
+		UDPClientSocket.close()
+		UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+
+		UDPClientSocket.bind((localIP, localPort))
+		return UDPClientSocket
+
+	#run_client
+	def run_client(UDPClientSocket, q):
+		
+		bufferSize  = 1024
+		localIP     = "127.0.0.1"
+		localPort   = 7501
+
+		print(f'UDP client up and lisLtening on {localIP}:{localPort}')
+
+		while True:
+			message, _ = UDPClientSocket.recvfrom(bufferSize)
+			message = message.decode()
+			print(f'client recieved message {message}')
+			q.put(message)
+			pygame.event.post(pygame.event.Event(PLAYER_EVENT))
+		
+		print("program complete")
+	
+	#get_font
 	def get_font(size): # Returns Press-Start-2P in the desired size
 		return pygame.font.Font("./assets/font.ttf", size)
 
+	#set_music
 	def set_music():
-		# sound
 		mixer.init()
 
 		tracks = {
@@ -115,6 +163,21 @@ def action_screen():
 	green_score_box.text = '0'
 	red_score_box.text = '0'
 
+	#creating queue. this allows client_thread to share live data with the main thread
+	message_queue = queue.Queue()
+
+	#start the server thread
+	server_thread = threading.Thread(target=start_server)
+	server_thread.daemon = True
+	server_thread.start()
+
+	print("server started")
+
+	#creating the client UDPSocket, and thread
+	UDPClient = create_client()
+	client_thread = threading.Thread(target=run_client, args=(UDPClient, message_queue))
+	client_thread.daemon = True
+	client_thread.start()
 
 	while True:
 		# Background Color
@@ -154,38 +217,29 @@ def action_screen():
 			'Green': green_team_table
 		}
 
-		#-----------------------------------------------------------------------------------------------------#
-		# Message scrolling, and receiver for the UDP signals-------------------------------------------------#
-		#get message and update scores
-		if not(countdown_timer_box.game_over) and random.random() < 0.002:
-			#this will simulate a message. it does not receive a message.
-			message = "Wall Lasered Billy"
-			action_box.add_message(message)
-			#splices out player names from message string
-			players = message.split(" Lasered ")
-
-			if players[0] in team_tables['Red'].player_data:
-				loc = list(red_team_table.player_data).index(players[0])
-				red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
-				red_score_box.text = str(1+int(red_score_box.text))
-
-			elif players[0] in team_tables['Green'].player_data:
-				loc = list(red_team_table.player_data).index(players[0])
-				red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
-				red_score_box.text = str(1+int(red_score_box.text))
-
-			#elif players[0] in list(green_team_table.player_data):
-			#	loc = list(green_team_table.player_data).index(players[0])
-			#	green_team_table.table[loc][1].text = str(1+int(green_team_table.table[loc][1].text))
-			#	green_score_box.text = str(1+int(green_score_box.text))
-		
-		#-----------------------------------------------------------------------------------------------------#
-
 		mouse_pos = pygame.mouse.get_pos()
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
+			elif event.type == PLAYER_EVENT:
+				while not message_queue.empty():
+					message = message_queue.get()
+					print(f'{message}: recieved from queue')
+					action_box.add_message(message)
+					#splices out player names from message string
+					players = message.split(" Lasered ")
+
+					if players[0] in team_tables['Red'].player_data:
+						loc = list(red_team_table.player_data).index(players[0])
+						red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
+						red_score_box.text = str(1+int(red_score_box.text))
+
+					elif players[0] in team_tables['Green'].player_data:
+						loc = list(red_team_table.player_data).index(players[0])
+						red_team_table.table[loc][1].text = str(1+int(red_team_table.table[loc][1].text))
+						red_score_box.text = str(1+int(red_score_box.text))
+
 		
 		pygame.display.update()
