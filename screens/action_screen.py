@@ -154,6 +154,8 @@ def action_screen():
 			'Green': green_team_table
 		}
 
+		#-----------------------------------------------------------------------------------------------------#
+		# Message scrolling, and receiver for the UDP signals-------------------------------------------------#
 		#get message and update scores
 		if not(countdown_timer_box.game_over) and random.random() < 0.002:
 			#this will simulate a message. it does not receive a message.
@@ -176,7 +178,8 @@ def action_screen():
 			#	loc = list(green_team_table.player_data).index(players[0])
 			#	green_team_table.table[loc][1].text = str(1+int(green_team_table.table[loc][1].text))
 			#	green_score_box.text = str(1+int(green_score_box.text))
-
+		
+		#-----------------------------------------------------------------------------------------------------#
 
 		mouse_pos = pygame.mouse.get_pos()
 
