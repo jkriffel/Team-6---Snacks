@@ -10,6 +10,7 @@ FONT_BUTTON = pygame.font.Font("./assets/font.ttf", 10)
 
 COLOR_DISABLED_BOX = pygame.Color('White')
 COLOR_ENABLED_BOX = pygame.Color('Purple')
+FLASH_ENABLED = pygame.Color('Black')
 FONT_BOX = pygame.font.Font("./assets/font.ttf", 20)
 
 class TextBox:
@@ -20,6 +21,8 @@ class TextBox:
 		self.text = ''
 		self.text_draw = FONT_BOX.render('', True, self.color)
 		self.active = False
+		self.flash = False
+		self.count = 0
 		self.screen = screen
 		self.box_id = box_id
 		#box_ID = 0 is the small left box while 1 is the larger right box
@@ -30,10 +33,14 @@ class TextBox:
 
 	def draw(self, screen):
 		self.color = COLOR_ENABLED_BOX if self.active else COLOR_DISABLED_BOX
+		if self.count > 100 and self.flash == True:
+			self.color = COLOR_ENABLED_BOX
+		if self.count > 140:
+			self.count = 0
 		self.text_draw = FONT_BOX.render(self.text, True, self.color)
 		screen.blit(self.text_draw, (self.rect.x+5, self.rect.y+5))
 		pygame.draw.rect(screen, self.color, self.rect, 3)
-
+		self.count += 1
 
 class Player_Table:
 
