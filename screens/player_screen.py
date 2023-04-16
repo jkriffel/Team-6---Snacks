@@ -63,22 +63,17 @@ def player_screen():
 	#game loop
 	while True:
 		
-		# Background Color
 		SCREEN.fill("black")
 
-		# Player Id text
 		SCREEN.blit(team1_id_text, team1_id_text_rect)
 		SCREEN.blit(team2_id_text, team2_id_text_rect)
 
-		# Player Codename text
 		SCREEN.blit(team1_codename_text, team1_codename_text_rect)
 		SCREEN.blit(team2_codename_text, team2_codename_text_rect)
 
-		# Player ID & Codename boxes
 		red_team_table.draw(SCREEN)
 		green_team_table.draw(SCREEN)
 
-		#draw buttons
 		for button in buttons:
 			button.draw(SCREEN)
 						

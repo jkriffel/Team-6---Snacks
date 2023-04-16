@@ -67,13 +67,13 @@ def start_server():
 		# Make these messages cool 
 
 		if random.randint(1,2) == 1:
-			message = red_player_name + " Lasered " + green_player_name
+			message = red_player_ID + ":" + green_player_ID
 		else:
-			message = green_player_name + " Lasered " + red_player_name
+			message = green_player_ID + ":" + red_player_ID
 
 		# Rather than printing to console, put into action screen
-		print(message)
 		time.sleep(random.randint(2,5))
+		#print(message)
 		UDPServerSocket.sendto(str.encode(str(message)), (localIP, 7501))
 
 #start_server()

@@ -37,7 +37,7 @@ class TextBox:
 			self.color = COLOR_ENABLED_BOX
 		if self.count > 140:
 			self.count = 0
-		self.text_draw = FONT_BOX.render(self.text, True, self.color)
+		self.text_draw = FONT_BOX.render(str(self.text), True, self.color)
 		screen.blit(self.text_draw, (self.rect.x+5, self.rect.y+5))
 		pygame.draw.rect(screen, self.color, self.rect, 3)
 		self.count += 1
@@ -62,7 +62,7 @@ class Player_Table:
 	def info_to_json(self):
 		result = {}
 		for i in range(len(self.table)):
-			result[self.table[i][0].text] = self.table[i][1].text
+			result[self.table[i][0].text] = [self.table[i][1].text]
 		return result
 
 
@@ -111,7 +111,7 @@ class Action_Table:
 
 	def __init__(self, screen, x, y, w, h, player_data):
 		self.table = []
-		self.player_data = player_data.keys()
+		self.player_data = player_data
 		self.screen = screen
 		#create a 2x15 table
 		for i in range (15):
@@ -120,10 +120,10 @@ class Action_Table:
 			self.table.append([ left_box, right_box])
 		
 		#insert player data into the table
-		for i in range(len(self.player_data)):
-			if list(self.player_data)[i] != '':
-				self.table[i][0].text = list(self.player_data)[i]
-				self.table[i][1].text = '0' 
+		for i, (key, values) in enumerate(self.player_data.items()):
+			if values[0] != '':
+				self.table[i][0].text = self.player_data[key][0]
+				self.table[i][1].text = self.player_data[key][1] 
 
 	#Iterates through all rectangle entities in table and draws
 	def draw(self, screen):
@@ -132,10 +132,11 @@ class Action_Table:
 				self.table[i][j].draw(screen)
 
 	#Handles input events
-	def handle_event(self, event):
-		for i in range(len(self.table)):
-			for j in range(len(self.table[i])):
-				pass
+	def update(self):
+		for i, (key, values) in enumerate(self.player_data.items()):
+			if values[0] != '':
+				self.table[i][0].text = self.player_data[key][0]
+				self.table[i][1].text = self.player_data[key][1] 
 
 class Timer_Box:
 

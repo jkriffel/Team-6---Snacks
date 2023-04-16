@@ -55,12 +55,12 @@ def action_screen():
 		localIP     = "127.0.0.1"
 		localPort   = 7501
 
-		print(f'UDP client up and lisLtening on {localIP}:{localPort}')
+		print(f'UDP client up and listening on {localIP}:{localPort}')
 
 		while True:
 			message, _ = UDPClientSocket.recvfrom(bufferSize)
 			message = message.decode()
-			print(f'client recieved message {message}')
+			#print(f'client recieved message {message}')
 			q.put(message)
 			pygame.event.post(pygame.event.Event(PLAYER_EVENT))
 		
@@ -94,8 +94,11 @@ def action_screen():
 
 		mixer.music.set_volume(0.2)
 
-	def update_player_score(player_name, ):
-		pass
+	def generate_message(player_names):
+		messagesLR = [" zapped ", " lasered ", " blasted ", " sniped ", " tagged ", " vaporized "]
+		action_message = player_names[0] + random.choice(messagesLR) + player_names[1]
+		return action_message 
+
 	#endregion
 
 	#open the JSON file and read the corresponding dictionaries into to variables
@@ -106,16 +109,12 @@ def action_screen():
 	green_team_data = team_data_from_json[0]
 	red_team_data = team_data_from_json[1]
 
-	#data tracked in dictionary by name this one becomes formatted as 'CODENAME': 'Score'
-	red_team_scores = {}
-	green_team_scores = {}
-
 	#red team score initialization
-	for player_data in red_team_data.values():
-		red_team_scores[player_data] = 0
+	for player_id in red_team_data.keys():
+		red_team_data[player_id].append(0)
 	#green team score initialization
-	for player_data in green_team_data.values():
-		green_team_scores[player_data] = 0
+	for player_id in green_team_data.keys():
+		green_team_data[player_id].append(0)
 	
 	#clock for timer
 	clock = pygame.time.Clock()
@@ -144,8 +143,8 @@ def action_screen():
 	red_team_score_text_rect = red_team_score_text.get_rect(topleft=(SCREEN_CENTER_X + 365, SCREEN_CENTER_Y + 255))
 
 	# create tables for the player name and score 
-	green_team_table   = Action_Table(SCREEN, SCREEN_CENTER_X - 565, SCREEN_CENTER_Y - 270, TABLE_WIDTH, TABLE_HEIGHT, green_team_scores)
-	red_team_table = Action_Table(SCREEN, SCREEN_CENTER_X + 235, SCREEN_CENTER_Y - 270, TABLE_WIDTH, TABLE_HEIGHT, red_team_scores)
+	green_team_table   = Action_Table(SCREEN, SCREEN_CENTER_X - 565, SCREEN_CENTER_Y - 270, TABLE_WIDTH, TABLE_HEIGHT, green_team_data)
+	red_team_table = Action_Table(SCREEN, SCREEN_CENTER_X + 235, SCREEN_CENTER_Y - 270, TABLE_WIDTH, TABLE_HEIGHT, red_team_data)
 
 	# create box for countdown to go into
 	countdown_timer_box = Timer_Box(SCREEN,SCREEN_CENTER_X - 32, SCREEN_CENTER_Y - 280, CLOCK_WIDTH, CLOCK_HEIGHT)
@@ -179,42 +178,35 @@ def action_screen():
 	client_thread.start()
 
 	while True:
-		# Background Color
 		SCREEN.fill("black")
-		# Counterdown timer text
+
 		SCREEN.blit(countdown_text_1,countdown_text_1_rect)
-		# Player Codename Text
+
 		SCREEN.blit(green_team_codename, green_team_codename_rect)
 		SCREEN.blit(red_team_codename, red_team_codename_rect)
-		# Action box text
+
 		SCREEN.blit(action_box_text,action_box_text_rect)
-		# Team score text 
+
 		SCREEN.blit(green_team_score_text,green_team_score_text_rect)
 		SCREEN.blit(red_team_score_text,red_team_score_text_rect)
-		# Player name & Player Score box 
+
 		red_team_table.draw(SCREEN)
 		green_team_table.draw(SCREEN)
-		# Clock box 
+
 		countdown_timer_box.draw(SCREEN)
-		# Action box
+
 		action_box.draw(SCREEN)
-		# Total team score boxes
+
 		green_score_box.draw(SCREEN)
 		red_score_box.draw(SCREEN)
 
 		pygame.display.flip()
 
-		#update timer
 		countdown_timer_box.update(clock.tick())
 
 		if countdown_timer_box.game_over == True:
 			countdown_text_1 = get_font(26).render("GAME OVER", True, "PURPLE")
 			mixer.music.stop()
-
-		team_tables = {
-			'Red': red_team_table,
-			'Green': green_team_table
-		}
 
 		mouse_pos = pygame.mouse.get_pos()
 
@@ -225,24 +217,35 @@ def action_screen():
 			elif event.type == PLAYER_EVENT:
 				while not message_queue.empty():
 					message = message_queue.get()
-					print(f'{message}: recieved from queue')
-					action_box.add_message(message)
+					#print(f'{message}: recieved from queue')
 					#splices out player names from message string
-					players = message.split(" Lasered ")
+					player_IDs = message.split(":")
 
-					if players[0] in team_tables['Red'].player_data:
-						loc = list(red_team_table.player_data).index(players[0])
-						red_team_table.table[loc][1].text = str(10+int(red_team_table.table[loc][1].text))
+					if player_IDs[0] in red_team_data:
+						#generate message for action box
+						red_player_name = red_team_data[player_IDs[0]][0]
+						green_player_name = green_team_data[player_IDs[1]][0]
+						action_box.add_message(generate_message([red_player_name, green_player_name]))
+
+						#update the scores
+						red_team_data[player_IDs[0]][1] += 10 
+						red_team_table.player_data = red_team_data
+						red_team_table.update()
 						red_score_box.text = str(10+int(red_score_box.text))
 
-					elif players[0] in team_tables['Green'].player_data:
-						loc = list(green_team_table.player_data).index(players[0])
-						green_team_table.table[loc][1].text = str(10+int(green_team_table.table[loc][1].text))
+					if player_IDs[0] in green_team_data:
+						#generate message for action box
+						green_player_name = green_team_data[player_IDs[0]][0]
+						red_player_name = red_team_data[player_IDs[1]][0]
+						action_box.add_message(generate_message([green_player_name, red_player_name]))
+						
+						#update the scores
+						green_team_data[player_IDs[0]][1] += 10 
+						green_team_table.player_data = green_team_data
+						green_team_table.update()
 						green_score_box.text = str(10+int(green_score_box.text))
 
-					#-------------------------------#
-					# Flashing High Team Score      #
-					#-------------------------------#
+					# Flashing High Team Score 
 					if int(green_score_box.text) > int(red_score_box.text):
 						green_score_box.flash = True
 						red_score_box.flash = False
