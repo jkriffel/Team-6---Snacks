@@ -1,12 +1,12 @@
 # Software Engineering Project Spring 2023 - Team 6
-Laser tag game created with Python and a Heroku database
+Laser tag game created with Python and a local JSON database file
 
 ## Table of Contents
 * [General Info](#general-info)
 * [Technologies Used](#technologies-used)
 * [Features](#features)
 * [Setup](#setup)
-* [File Descriptions](#file-descriptions)
+* [File and Folder Descriptions](#file-and-folder-descriptions)
 * [Status](#status)
 
 ## General Info
@@ -35,15 +35,17 @@ To run the game:
 ```
 $ python main.py 
 ```
-To query the database on the Player Entry Screen, press ENTER after typing in an ID or Codename to add or get information from Heroku.
+To query the database on the Player Entry Screen, press ENTER after typing in an ID or Codename to add or get information from the JSON file.
 
 ## File and Folder Descriptions
 * button.py - The button class. This class allows for the creation of buttons that when pressed, perform an action assigned to them.
 * database.py - This class handles interactions with the Heroku database including: connection testing, player creation, and codename retrieval.
+* functional_interfaces.py - This class defines several important interfaces: Textbox, Player_Table, Action_Table, Timer_Box, Action_Box, and Button.
 * main.py - The main class which calls the separate screens.
 * player_table.py - This class creates the player table and handles interactions with it. Players entered into the table (on the player screen) are added to 
                     the sql database (if they do not already exist). If a matching ID is entered, player codenames are auto-retrived from the database.
                     This class also displays and updates the timer for the player action screen.
+* table_data.json - This file stores player ids and codenames for later use.
 * textbox.py - The textbox/"player" class. This class is used for the collection and organization of player data (id and codename) that is entered on 
                the player entry screen.
 * Assets folder - Contains images as well as font specifications for the player and splash screens.
@@ -51,4 +53,4 @@ To query the database on the Player Entry Screen, press ENTER after typing in an
 * Screens folder - Contains the splash, player, action, and countdown screen files.
 
 ## Status
-Project is in progress. Last Updated: 3/12/23
+Project is functionally complete. Last Updated: 4/15/23
