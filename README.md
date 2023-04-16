@@ -1,5 +1,5 @@
 # Software Engineering Project Spring 2023 - Team 6
-Laser tag game created with Python and a local JSON database file
+Laser tag game created with Python
 
 ## Table of Contents
 * [General Info](#general-info)
@@ -35,7 +35,7 @@ To run the game:
 ```
 $ python main.py 
 ```
-To query the database on the Player Entry Screen, press ENTER after typing in an ID or Codename to add or get information from the JSON file.
+To query the database on the Player Entry Screen, press ENTER after typing in an ID.
 
 ## File and Folder Descriptions
 * button.py - The button class. This class allows for the creation of buttons that when pressed, perform an action assigned to them.
@@ -54,4 +54,4 @@ To query the database on the Player Entry Screen, press ENTER after typing in an
 * UDP folder - Contains files for successful communication with UDP sockets.
 
 ## Status
-Project is functionally complete. Last Updated: 4/15/23
+Project is functionally complete. Last Updated: 4/16/23
