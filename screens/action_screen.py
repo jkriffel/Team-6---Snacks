@@ -240,14 +240,15 @@ def action_screen():
 						green_team_table.table[loc][1].text = str(10+int(green_team_table.table[loc][1].text))
 						green_score_box.text = str(10+int(green_score_box.text))
 
+					#-------------------------------#
+					# Flashing High Team Score      #
+					#-------------------------------#
 					if int(green_score_box.text) > int(red_score_box.text):
 						green_score_box.flash = True
 						red_score_box.flash = False
-
 					elif int(red_score_box.text) > int(green_score_box.text):
 						red_score_box.flash = True
 						green_score_box.flash = False
-
 					if int(green_score_box.text) == int(red_score_box.text):
 						red_score_box.flash = False
 						green_score_box.flash = False					
