@@ -106,7 +106,15 @@ def player_screen():
 									json.dump(table_data, json_file, indent=4)
 								pygame.display.quit()
 								return
-							
+
+							elif button.button_id == 12:
+								for i in range(len(red_team_table.table)):
+									for j in range(len(red_team_table.table[i])):
+										red_team_table.table[i][j].text = ""
+								for i in range(len(green_team_table.table)):
+									for j in range(len(green_team_table.table[i])):
+										green_team_table.table[i][j].text = ""
+
 							else:
 									print(f"No real action for button {button.button_id}")
 					button.active = not button.active
