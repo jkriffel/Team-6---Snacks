@@ -10,6 +10,7 @@ FONT_BUTTON = pygame.font.Font("./assets/font.ttf", 10)
 
 COLOR_DISABLED_BOX = pygame.Color('White')
 COLOR_ENABLED_BOX = pygame.Color('Purple')
+FLASH_ENABLED = pygame.Color('Black')
 FONT_BOX = pygame.font.Font("./assets/font.ttf", 20)
 
 class TextBox:
@@ -20,6 +21,8 @@ class TextBox:
 		self.text = ''
 		self.text_draw = FONT_BOX.render('', True, self.color)
 		self.active = False
+		self.flash = False
+		self.count = 0
 		self.screen = screen
 		self.box_id = box_id
 		#box_ID = 0 is the small left box while 1 is the larger right box
@@ -30,10 +33,14 @@ class TextBox:
 
 	def draw(self, screen):
 		self.color = COLOR_ENABLED_BOX if self.active else COLOR_DISABLED_BOX
+		if self.count > 100 and self.flash == True:
+			self.color = COLOR_ENABLED_BOX
+		if self.count > 140:
+			self.count = 0
 		self.text_draw = FONT_BOX.render(self.text, True, self.color)
 		screen.blit(self.text_draw, (self.rect.x+5, self.rect.y+5))
 		pygame.draw.rect(screen, self.color, self.rect, 3)
-
+		self.count += 1
 
 class Player_Table:
 
@@ -165,10 +172,17 @@ class Action_Box:
 
 	#Iterates through all rectangle entities in table and draws
 	def draw(self, screen):
-		self.text_render = self.font.render(self.text, True, pygame.Color("White"))
-		self.text_rect = self.text_render.get_rect(midtop=(self.rect.x + self.w/2, self.rect.y + 60))
-		screen.blit(self.text_render, self.text_rect)
+		lines = self.text.split("\n")
+		for i in range(len(lines)-1, -1, -1):
+			self.text_render = self.font.render(lines[i], True, pygame.Color("White"))
+			self.text_rect = self.text_render.get_rect(midtop=(self.rect.x + self.w/2, self.rect.y + 60 + 30*(len(lines)-1-i)))
+			screen.blit(self.text_render, self.text_rect)
 		pygame.draw.rect(screen, pygame.Color('White'), self.rect, 3)
+
+	def add_message(self, message, max_lines=16):
+		self.text += f"\n{message}"
+		if self.text.count("\n") >= max_lines:
+			self.text = self.text[self.text.find("\n")+1:]
 
 class Button:
 
