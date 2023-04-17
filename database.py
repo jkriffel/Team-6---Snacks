@@ -68,3 +68,21 @@ def create_user(id, codename):
         myConnection.commit()
         myCurrent.close()
         myConnection.close()
+
+
+def remove_user(id, codename):
+    #Create connection with heroku postgres add on
+    myConnection = return_database()
+    myCurrent = myConnection.cursor()
+
+    #check if user is exists, if it does, error
+    if check_user_from_id(id):
+        myCurrent.close()
+        myConnection.close()
+        
+        myCurrent.execute("DELETE FROM player (id, first_name, last_name, codename) VALUES (%s, %s, %s, %s);",
+                (id, None, None, codename))
+
+        myConnection.commit()
+        myCurrent.close()
+        myConnection.close()
